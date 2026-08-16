@@ -43,7 +43,18 @@ En particular, se espera que pueda:
 | UA3 · Recuperación frente a desastres | 15 | Continuidad, BIA, RTO, RPO, recuperación, respuesta a incidentes, pruebas, métricas y mitigación de vulnerabilidades. | 20% |
 | Evaluación final integradora | 3 | Resolución de un caso organizacional mediante controles, políticas, mitigación, respuesta y recuperación. | 30% |
 
-Las ponderaciones suman el 100% de la calificación. Las fechas, modalidades y condiciones específicas de cada evaluación se comunican mediante los canales institucionales de la asignatura.
+Las ponderaciones suman el 100% de la calificación.
+
+## Calendario de evaluaciones 2026/2
+
+| Evaluación | Ponderación | SAINF44-1 · Diurna | SAINF44-2 · Vespertina |
+| --- | ---: | --- | --- |
+| Evaluación UA1 | 30% | 15-09-2026 | 14-09-2026 |
+| Evaluación UA2 | 20% | 27-10-2026 | 02-11-2026 |
+| Evaluación UA3 | 20% | 01-12-2026 | 07-12-2026 |
+| Evaluación final | 30% | 15-12-2026 | 14-12-2026 |
+
+La evaluación final de SAINF44-1 recupera la clase suspendida por el feriado del 8 de diciembre; la evaluación final de SAINF44-2 recupera la clase suspendida por el feriado del 12 de octubre. Cualquier reprogramación se comunicará mediante los canales institucionales de la asignatura.
 
 ## Ruta del semestre
 
