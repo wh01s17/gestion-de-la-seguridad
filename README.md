@@ -1,6 +1,6 @@
 # INF44 · Gestión de la Seguridad
 
-Repositorio académico de **INF44 — Gestión de la Seguridad**, asignatura de la carrera Técnico de Nivel Superior en Ciberseguridad del CFT San Antonio. Aquí se publican materiales de clase, actividades, casos y recursos de apoyo para las secciones diurna y vespertina del segundo semestre de 2026.
+Repositorio académico de **INF44 - Gestión de la Seguridad**, asignatura de la carrera Técnico de Nivel Superior en Ciberseguridad del CFT San Antonio. Aquí se publican materiales de clase, actividades, casos y recursos de apoyo para las secciones diurna y vespertina del segundo semestre de 2026.
 
 La asignatura estudia cómo proteger los activos de información de una organización mediante la identificación y valoración de riesgos, la selección de controles, la formulación de políticas y la preparación para responder y recuperarse de incidentes. El objetivo no es instalar controles aislados, sino relacionarlos con necesidades del negocio, responsables, evidencia de operación y criterios verificables de efectividad.
 
@@ -60,10 +60,10 @@ La evaluación final de SAINF44-1 recupera la clase suspendida por el feriado de
 
 La secuencia común comprende 18 lecciones:
 
-1. **Lecciones 01–06 — Ataques y controles:** Cyber Kill Chain, vectores, clasificación y priorización de controles, AAA, firewall e IDS. La lección 06 integra la UA1.
-2. **Lecciones 07–12 — Riesgos y políticas:** contexto, activos, amenazas, vulnerabilidades, matrices, tratamiento, riesgo residual, diseño y auditoría de políticas. La lección 12 integra la UA2.
-3. **Lecciones 13–17 — Recuperación y respuesta:** BIA, RTO, RPO, continuidad, recuperación frente a desastres, respuesta a incidentes, ejercicios, métricas y mitigación. La lección 17 integra la UA3.
-4. **Lección 18 — Evaluación final:** caso organizacional que relaciona riesgos, controles, políticas, vulnerabilidades, respuesta y recuperación.
+1. **Lecciones 01–06 - Ataques y controles:** Cyber Kill Chain, vectores, clasificación y priorización de controles, AAA, firewall e IDS. La lección 06 integra la UA1.
+2. **Lecciones 07–12 - Riesgos y políticas:** contexto, activos, amenazas, vulnerabilidades, matrices, tratamiento, riesgo residual, diseño y auditoría de políticas. La lección 12 integra la UA2.
+3. **Lecciones 13–17 - Recuperación y respuesta:** BIA, RTO, RPO, continuidad, recuperación frente a desastres, respuesta a incidentes, ejercicios, métricas y mitigación. La lección 17 integra la UA3.
+4. **Lección 18 - Evaluación final:** caso organizacional que relaciona riesgos, controles, políticas, vulnerabilidades, respuesta y recuperación.
 
 Ambas secciones desarrollan el mismo núcleo formativo en 18 clases de tres horas, de acuerdo con el calendario institucional de cada jornada.
 
