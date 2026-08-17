@@ -134,6 +134,7 @@ activo → amenaza → vulnerabilidad → escenario de riesgo
 - National Institute of Standards and Technology. (2025). [*Incident Response Recommendations and Considerations for Cybersecurity Risk Management* (NIST SP 800-61 Rev. 3)](https://csrc.nist.gov/pubs/sp/800/61/r3/final).
 - Cybersecurity and Infrastructure Security Agency. (s. f.). [*Incident and Vulnerability Response Playbooks*](https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks).
 - Snort. (s. f.). [*Snort 3 Rule Writing Guide*](https://docs.snort.org/).
+- OWASP Foundation. (2025). [*OWASP Top 10:2025*](https://owasp.org/Top10/2025/).
 - OWASP Foundation. (s. f.). [*Application Security Verification Standard*](https://owasp.org/www-project-application-security-verification-standard/).
 - OWASP Foundation. (s. f.). [*Web Security Testing Guide*](https://owasp.org/www-project-web-security-testing-guide/).
 
