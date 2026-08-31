@@ -1,0 +1,4 @@
+cuenta,rol,accion_permitida,accion_denegada,evento_esperado_en_los_logs
+admin01,admin-red,administrar el firewall con sudo ufw,conectarse desde la red de patio 10.20.20.0/24,un evento sudo con COMMAND=/usr/sbin/ufw
+soporte01,soporte,,,
+auditor01,auditor,,,

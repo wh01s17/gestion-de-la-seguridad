@@ -1,0 +1,4 @@
+orden,origen,servicio,accion,justificacion,resultado_observado
+1,10.10.10.0/24,TCP/22,,,
+2,cualquiera,TCP/443,,,
+3,cualquier otro,todo lo demas,,,
