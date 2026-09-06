@@ -94,6 +94,10 @@ Para los casos de gestión se recomienda seguir este flujo:
 
 Dentro de cada lección pueden existir guías, actividades, configuraciones de laboratorio, casos y documentos de apoyo. Se debe trabajar en la carpeta de la sección correspondiente y respetar las instrucciones particulares de cada entrega.
 
+## Material pesado
+
+Las OVA y otros archivos de laboratorio que no se almacenan en GitHub están disponibles en [material de Gestión de la Seguridad](https://sud0.link/material-gestion).
+
 ## Criterios de una buena solución
 
 Una propuesta de seguridad debe ser proporcional y verificable. No basta con nombrar una herramienta o copiar una lista de controles: se debe explicar qué riesgo aborda, cómo se implementará, quién será responsable, qué evidencia demostrará su operación y cómo se medirá el riesgo residual.
