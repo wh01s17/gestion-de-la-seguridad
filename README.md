@@ -4,6 +4,10 @@ Repositorio académico de **INF44 - Gestión de la Seguridad**, asignatura de la
 
 La asignatura estudia cómo proteger los activos de información de una organización mediante la identificación y valoración de riesgos, la selección de controles, la formulación de políticas y la preparación para responder y recuperarse de incidentes. El objetivo no es instalar controles aislados, sino relacionarlos con necesidades del negocio, responsables, evidencia de operación y criterios verificables de efectividad.
 
+## Material de laboratorio
+
+> **Descarga:** [OVA y material pesado de Gestión de la Seguridad](https://sud0.link/material-gestion).
+
 ## Información general
 
 | Antecedente | Detalle |
@@ -93,10 +97,6 @@ Para los casos de gestión se recomienda seguir este flujo:
 ```
 
 Dentro de cada lección pueden existir guías, actividades, configuraciones de laboratorio, casos y documentos de apoyo. Se debe trabajar en la carpeta de la sección correspondiente y respetar las instrucciones particulares de cada entrega.
-
-## Material pesado
-
-Las OVA y otros archivos de laboratorio que no se almacenan en GitHub están disponibles en [material de Gestión de la Seguridad](https://sud0.link/material-gestion).
 
 ## Criterios de una buena solución
 
