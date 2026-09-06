@@ -1,0 +1,7 @@
+componente,identidad_o_origen,decision_esperada,evidencia_minima
+AAA,admin01/admin-red,puede administrar controles mediante cambio aprobado,cuenta individual + evento de cambio
+AAA,soporte01/soporte,puede consultar el servicio pero no modificar reglas,cuenta individual + consulta o denegación
+AAA,auditor01/auditor,puede leer configuración alertas y registros sin cambiar controles,cuenta individual + consulta
+firewall,10.10.10.0/24 hacia 10.10.20.5:80,permitir solo para el laboratorio,regla con origen destino servicio acción y registro
+firewall,cualquier otro origen hacia 10.10.20.5:80,denegar,evento o política de denegación
+IDS,tráfico observado hacia 10.10.20.5:80,alertar solo ante UA1-LAB en dirección al servidor,regla + alerta positiva + negativas

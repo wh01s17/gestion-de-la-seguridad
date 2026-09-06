@@ -1,0 +1,9 @@
+marca_tiempo,origen_registro,evento,cuenta_o_origen,detalle
+2026-09-07T09:58:12-03:00,AAA,sesion aceptada,soporte01,ssh desde 10.10.10.10
+2026-09-07T09:59:40-03:00,AAA,sesion aceptada,admin01,ssh desde 10.10.10.10
+2026-09-07T10:00:00-03:00,firewall,permitido,10.10.10.10:41001 -> 10.10.20.5:80,P1 permitido por regla lab-http para 10.10.10.0/24
+2026-09-07T10:00:00-03:00,accounting,solicitud http,soporte01,POST /demo en WEB-LAB
+2026-09-07T10:00:00-03:00,accounting,solicitud http,soporte01,GET /status en WEB-LAB
+2026-09-07T10:00:01-03:00,firewall,permitido,10.10.10.10:41003 -> 10.10.20.5:80,P3 permitido por regla lab-http para 10.10.10.0/24
+2026-09-07T10:00:01-03:00,accounting,solicitud http,sin sesion asociada,GET /LOGIN-help en WEB-LAB
+2026-09-07T10:02:35-03:00,firewall,denegado,10.20.20.31 -> 10.10.20.5:80,origen fuera del segmento autorizado

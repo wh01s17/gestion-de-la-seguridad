@@ -1,0 +1,6 @@
+control,resultado_esperado,resultado_observado,coincide
+direcciones_cliente,el cliente tiene 10.10.10.10 y 10.20.20.10,,
+conectividad,responden los ping a 10.10.10.20 y a 10.20.20.20,,
+aislamiento,ip route no muestra ninguna linea default,,
+firewall_inicial,ufw status dice inactive,,
+snapshot,existe la instantanea LAB04-INICIAL,,

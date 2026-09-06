@@ -15,7 +15,7 @@ created_at: 2026-08-07 11:58
 aliases:
   - Actividad - Interrumpir una cadena de ataque
 url-gist: https://gist.github.com/wh01s17/bf76f0f3525abc8e166aeaaa5047b62b
-url-short:
+url-short: https://sud0.link/repo
 ---
 # Actividad - Interrumpir una cadena de ataque
 
@@ -35,15 +35,15 @@ Ordenar los hechos del caso y proponer dos medidas sencillas para detener o dete
 
 ## Las siete fases en palabras simples
 
-| Fase | Pregunta sencilla |
-| --- | --- |
-| Reconocimiento | ¿Qué información busca el atacante? |
-| Armamentización o preparación | ¿Qué prepara para engañar o atacar? |
-| Entrega | ¿Cómo llega el engaño o archivo a la organización? |
-| Explotación | ¿Qué acción o debilidad le permite avanzar? |
-| Instalación | ¿Qué deja instalado o habilitado? |
-| Comando y control | ¿Cómo mantiene la comunicación o el acceso? |
-| Acciones sobre objetivos | ¿Qué hace finalmente con los sistemas o datos? |
+| Fase                          | Pregunta sencilla                                  |
+| ----------------------------- | -------------------------------------------------- |
+| Reconocimiento                | ¿Qué información busca el atacante?                |
+| Armamentización o preparación | ¿Qué prepara para engañar o atacar?                |
+| Entrega                       | ¿Cómo llega el engaño o archivo a la organización? |
+| Explotación                   | ¿Qué acción o debilidad le permite avanzar?        |
+| Instalación                   | ¿Qué deja instalado o habilitado?                  |
+| Comando y control             | ¿Cómo mantiene la comunicación o el acceso?        |
+| Acciones sobre objetivos      | ¿Qué hace finalmente con los sistemas o datos?     |
 
 ## Parte A - Relacionar los hechos
 
@@ -78,6 +78,6 @@ Pueden utilizar: verificación de facturas, filtro de correo, MFA, antimalware/E
 
 Cada integrante completa individualmente:
 
-> Intentaría detener o detectar el ataque en la fase ___ mediante ___; sabría que funciona al revisar ___.
+> Intentaría detener o detectar el ataque en la fase ___ mediante ___ ; sabría que funciona al revisar ___ .
 
 La Kill Chain ayuda a ordenar el caso, aunque los ataques reales no siempre siguen todos los pasos en el mismo orden.

@@ -1,0 +1,6 @@
+id,que_se_prueba,resultado_esperado,resultado_observado,donde_lo_confirmo,coincide
+AAA-01,admin01 entra por SSH desde 10.10.10.10,permitido,,,
+AAA-02,soporte01 consulta el estado del servicio SSH,permitido,,,
+AAA-03,soporte01 intenta ver el estado de UFW,denegado,,,
+FW-01,SSH desde 10.10.10.10 hacia el servidor,permitido,,,
+FW-02,SSH desde 10.20.20.10 hacia el servidor,bloqueado o expira,,,

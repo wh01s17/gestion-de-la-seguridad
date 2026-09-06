@@ -1,0 +1,7 @@
+id,entrada,resultado_esperado,resultado_observado,coincide,evidencia_ids,firewall,aaa_o_accounting,conclusion
+BASE-SINTAXIS,local_l05.rules,carga sin errores,,,,no_aplica,no_aplica,regla_sintacticamente_valida
+P1,cliente a servidor con UA1-LAB,una alerta,,,,,,
+P2,cliente a servidor con GET /status,sin alerta,,,,no_solicitado,no_solicitado,prueba_negativa
+P3,cliente a servidor con GET /LOGIN-help,sin alerta,,,,,,
+P4,servidor a cliente con LOGIN complete,sin alerta,,,,no_solicitado,no_solicitado,prueba_negativa
+P5,servidor a cliente con UA1-LAB en la respuesta,sin alerta,,,,no_solicitado,no_solicitado,prueba_negativa_de_direccion

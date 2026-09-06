@@ -1,0 +1,2 @@
+# Regla deliberadamente amplia: analiza por qué alerta en tráfico no pertinente.
+alert tcp any any <> 10.10.20.5 80 (msg:"INF44 L05 patrón LOGIN amplio"; content:"LOGIN"; sid:1000101; rev:1;)
