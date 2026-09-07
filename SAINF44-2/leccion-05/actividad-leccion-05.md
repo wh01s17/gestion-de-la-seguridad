@@ -21,6 +21,7 @@ aliases:
 **Modalidad:** trabajo en parejas.
 **Carácter:** formativo, sin calificación.
 **Entorno:** VM `SENSOR-LAB`, sin conexión de red. Todo el análisis se realiza sobre una captura guardada.
+**Usuario para la actividad:** inicia sesión en el OVA `SENSOR-LAB` con la cuenta `lab`, cuya contraseña entrega el docente por separado. No uses la cuenta `docente`: está reservada para la preparación, el mantenimiento y la recuperación de la VM.
 
 ## Propósito
 
@@ -53,19 +54,25 @@ Por eso alerta ante tráfico que no interesa y no detecta el marcador solicitado
 
 La captura contiene cinco casos conocidos:
 
-| Caso | Tráfico | Contenido | Resultado esperado con la regla ajustada |
-| --- | --- | --- | --- |
-| P1 | cliente `41001` → servidor `80` | `UA1-LAB` dentro de `POST /demo` | Una alerta |
-| P2 | cliente `41002` → servidor `80` | `GET /status` | Sin alerta |
-| P3 | cliente `41003` → servidor `80` | `GET /LOGIN-help` | Sin alerta |
-| P4 | servidor `80` → cliente `41004` | `LOGIN complete` | Sin alerta |
-| P5 | servidor `80` → cliente `41005` | `UA1-LAB` en la respuesta | Sin alerta |
+| Caso | Tráfico                         | Contenido                        | Resultado esperado con la regla ajustada |
+| ---- | ------------------------------- | -------------------------------- | ---------------------------------------- |
+| P1   | cliente `41001` → servidor `80` | `UA1-LAB` dentro de `POST /demo` | Una alerta                               |
+| P2   | cliente `41002` → servidor `80` | `GET /status`                    | Sin alerta                               |
+| P3   | cliente `41003` → servidor `80` | `GET /LOGIN-help`                | Sin alerta                               |
+| P4   | servidor `80` → cliente `41004` | `LOGIN complete`                 | Sin alerta                               |
+| P5   | servidor `80` → cliente `41005` | `UA1-LAB` en la respuesta        | Sin alerta                               |
 
 P5 contiene el mismo marcador que P1, pero viaja en sentido contrario. Solo se pide alertar cuando el marcador va **hacia** el servidor.
 
 ## Preparación
 
-Estos pasos están incluidos en los 10 minutos de la Parte A.
+Confirma que la sesión abierta corresponde al usuario `lab`:
+
+```bash
+whoami
+```
+
+El comando debe mostrar `lab`. La actividad no requiere `sudo`; si aparece otro usuario, cierra la sesión e ingresa como `lab` antes de continuar.
 
 Entra a la carpeta `material/` y ejecuta:
 

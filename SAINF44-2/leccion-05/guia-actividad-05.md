@@ -43,6 +43,8 @@ La primera parte acompaña la actividad y la referencia final sirve para continu
 
 ## El laboratorio
 
+Para realizar la actividad, inicia sesión en el OVA `SENSOR-LAB` con el usuario `lab`; el docente entrega la contraseña por separado. La cuenta `docente`, que tiene privilegios administrativos, se utiliza únicamente para preparar, mantener o recuperar la VM y no debe usarse durante el trabajo del estudiante.
+
 ```text
 CLIENTE-LAB  →  FIREWALL  →  SENSOR IDS  →  WEB-LAB
 10.10.10.10                              10.10.20.5:80
@@ -283,6 +285,8 @@ Muestra los eventos asociados con P1, P3 y la conexión que el firewall denegó.
 ## Referencia práctica para después del laboratorio
 
 Esta parte es opcional durante la clase. Resume configuraciones y reglas habituales para continuar practicando Snort 3.
+
+Los comandos con `sudo` de esta referencia están pensados para una instalación propia o administrada, no para el OVA de la actividad. En `SENSOR-LAB` permanece con el usuario `lab` y no modifiques la configuración del sistema.
 
 Los ejemplos representan situaciones empresariales, pero no deben copiarse directamente a producción. Sustituye las redes, prueba tráfico positivo y negativo, mide los falsos positivos y correlaciona cada alerta con otras fuentes antes de declarar un incidente.
 
