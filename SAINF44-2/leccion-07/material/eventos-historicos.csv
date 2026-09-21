@@ -1,0 +1,8 @@
+id,fecha,evento,frecuencia_observada_24_meses,impacto_registrado,dimension_principal
+EH-01,2025-11-18,caida del sitio durante campana,1,38 millones de pesos en ventas no realizadas,financiero
+EH-02,2026-01-09,envio de archivo con 1200 direcciones al destinatario equivocado,1,notificacion a clientes y revision legal sin sancion,legal
+EH-03,2026-03-22,intento de fraude con tarjetas robadas,1,140 transacciones rechazadas sin perdida directa,financiero
+EH-04,2026-06-30,ransomware en un equipo de punto de venta,1,6 horas sin venta en un local,operativo
+EH-05,2026-08-14,cuenta de persona desvinculada activa 47 dias,3,sin uso indebido detectado,operativo
+EH-06,2025-2026,caidas breves del sitio menores a 30 minutos,11,sin perdida material registrada,operativo
+EH-07,2025-2026,reclamos de clientes por uso de sus datos,4,respuesta caso a caso sin escalamiento,reputacional

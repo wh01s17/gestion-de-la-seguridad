@@ -1,0 +1,13 @@
+id,parte_interesada,tipo,interes_principal,expectativa_declarada,autoridad_sobre_decisiones
+PI-01,Gerencia general,interna,continuidad del negocio y resultado anual,que la campaña de noviembre no se interrumpa,aprueba presupuesto y acepta riesgos estrategicos
+PI-02,Gerencia comercial,interna,ingreso de la venta en linea,que ningun control frene la conversion de ventas,decide sobre el sitio y las promociones
+PI-03,Jefatura de tecnologia,interna,operacion estable de plataformas,contar con recursos para sostener el servicio,decide arquitectura y cambios tecnicos
+PI-04,Encargado de seguridad (media jornada),interna,reduccion de exposicion,que se definan prioridades realistas,propone controles sin autoridad presupuestaria
+PI-05,Jefatura de operaciones de tienda,interna,venta presencial y caja,que el punto de venta no se detenga,decide procedimientos de local
+PI-06,Recursos humanos,interna,datos de trabajadores y desvinculaciones,que las bajas se procesen a tiempo,decide sobre altas y bajas de personal
+PI-07,Asesoria legal externa,externa,cumplimiento de datos personales,ser consultada antes de notificar a una autoridad,opina sin decidir
+PI-08,Clientes con cuenta registrada,externa,privacidad y disponibilidad del sitio,que sus datos no se expongan y poder comprar,ninguna
+PI-09,PAGOSUR,externa,integridad del flujo de pago,que la empresa no almacene datos de tarjeta,controla su plataforma y sus formatos
+PI-10,ANDESLOG,externa,continuidad del despacho,recibir los datos de entrega en el formato acordado,controla su plataforma y su retencion
+PI-11,NUBEPAC,externa,operacion del alojamiento,uso dentro del contrato estandar,controla la infraestructura y los respaldos
+PI-12,Adquirente de tarjetas,externa,alcance de datos de tarjeta,evidencia anual de cumplimiento,puede suspender el servicio de pago
