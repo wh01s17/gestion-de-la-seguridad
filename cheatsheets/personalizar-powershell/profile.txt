@@ -1,0 +1,10 @@
+oh-my-posh init pwsh --config "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/pure.omp.json" | Invoke-Expression
+Import-Module Terminal-Icons
+Set-PSReadLineOption -PredictionViewStyle ListView
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
+
+Remove-Item Alias:cd -Force -ErrorAction Ignore
+Set-Alias cd z
+
+Remove-Item Alias:ls -Force -ErrorAction Ignore
+Set-Alias ls eza
