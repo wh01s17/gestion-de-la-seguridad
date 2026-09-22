@@ -1,0 +1,8 @@
+id,proceso,soporte_tecnologico,dependencia_externa,dato_personal_involucrado,ventana_critica,efecto_de_una_interrupcion_de_4_horas
+PR-01,Venta en linea,sitio web y base de datos en NUBEPAC,NUBEPAC y PAGOSUR,nombre correo telefono direccion,campana de noviembre,perdida de ingreso y reclamos masivos
+PR-02,Pago con tarjeta,redireccion a pasarela PAGOSUR,PAGOSUR,datos de tarjeta tratados solo por el proveedor,todo el ano,ventas caidas y posible incumplimiento contractual
+PR-03,Despacho a domicilio,exportacion diaria hacia ANDESLOG,ANDESLOG,nombre telefono direccion,campana de noviembre,pedidos sin entregar y reclamos
+PR-04,Venta en local,punto de venta del fabricante,fabricante del punto de venta,boleta y medio de pago,horario comercial,caja detenida en el local afectado
+PR-05,Gestion de cuentas de usuario,directorio interno,ninguna,datos de trabajadores,todo el ano,accesos indebidos por bajas no procesadas
+PR-06,Analitica comercial,informes sobre copia de la base de clientes,ninguna,perfil de compra de clientes,mensual,retraso en informes sin efecto en la venta
+PR-07,Respaldo y restauracion,servicio declarado por NUBEPAC,NUBEPAC,todos los datos del sitio,todo el ano,imposibilidad de recuperar ante un incidente
