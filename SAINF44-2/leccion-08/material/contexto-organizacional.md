@@ -2,6 +2,8 @@
 
 Documento sintético para la Lección 07 de INF44. La empresa, las personas y los hechos son ficticios. Los dominios terminan en `.example` y las direcciones IP pertenecen a rangos reservados para documentación.
 
+> **Nota para la Lección 08:** este archivo conserva el estado inicial recibido antes de trabajar la Lección 07. La sección «Lo que no está definido» es histórica y no representa el estado vigente. Para alcance, escalas, tolerancias y propietarios consolidados use `estado-consolidado-l07.md` o el bloque equivalente de la actividad.
+
 ## 1. La organización
 
 PACÍFICO RETAIL SPA vende artículos de hogar y tecnología. Opera una tienda en línea y cinco locales físicos entre Valparaíso y San Antonio. Tiene 240 personas contratadas, de las cuales 9 trabajan en tecnología y 1 tiene funciones de seguridad a tiempo parcial.

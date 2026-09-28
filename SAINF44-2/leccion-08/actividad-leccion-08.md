@@ -19,129 +19,217 @@ aliases:
 
 # Actividad Lección 08 - Mesa de selección metodológica
 
-- **Modalidad:** equipos de tres, con los roles de la Lección 07.
-- **Duración práctica:** 75 minutos desde que el paquete está copiado y verificado. El cierre individual se realiza después, durante los 15 minutos finales de clase.
-- **Caso:** PR-2027-01 - PACÍFICO RETAIL SPA (ficticia), continuación de la Lección 07.
-- **Entorno:** estación Linux del laboratorio, terminal local sin conexión de red.
+- **Duración estimada:** 90 minutos.
+- **Caso:** `PR-2027-01` - PACÍFICO RETAIL SPA (ficticia), continuación de la Lección 07.
 - **Carácter:** formativo, sin calificación.
-- **Producto:** una ficha Markdown y su hash SHA-256.
+- **Producto:** este mismo archivo completado. Es para su propio trabajo y la discusión en clase; no se entrega.
 
 ## Pregunta del caso
 
-La Lección 07 fijó el alcance, las escalas, las tolerancias y los propietarios. La gerencia ahora pide decidir **cómo** se hará el trabajo de riesgo con una persona de seguridad a media jornada.
+La Lección 07 acotó el alcance y fijó criterios para el análisis. La gerencia ahora pide decidir **cómo** se sostendrá el trabajo de riesgo con una persona de seguridad a media jornada.
 
 > ¿Qué proceso ordenará el ciclo completo, qué apoyo se usará para evaluar escenarios y cómo se comunicará el resultado?
 
-Una guía de evaluación no cubre por sí sola el tratamiento, la aceptación y el seguimiento. No se valoran escenarios, no se asignan niveles y no se decide qué propuesta de tratamiento ejecutar primero: esas decisiones corresponden a las lecciones 09 y 10.
+Una guía de evaluación no cubre por sí sola el tratamiento, la aceptación y el seguimiento. En esta lección no se asignan niveles de riesgo ni se decide qué tratamiento ejecutar primero: esas decisiones corresponden a las lecciones 09 y 10.
 
-## Antes de empezar
+## Estado del caso al comenzar la Lección 08
 
-| Rol | Responsabilidad |
+Este bloque contiene las decisiones vigentes después de la Lección 07. Reemplaza las carencias descritas en el perfil original del caso.
+
+### Alcance vigente
+
+| Elemento | Decisión consolidada |
 | --- | --- |
-| Coordinador | Mantiene el tiempo y el alcance. |
-| Registrador | Edita la ficha única. |
-| Revisor | Comprueba cada razón contra una ficha o dato del caso. |
+| Objetivo | Establecer los criterios y propietarios con que se priorizarán los riesgos que puedan interrumpir la venta en línea o exponer datos personales durante la campaña. |
+| Periodo | 1 de octubre al 15 de diciembre de 2026. |
+| Incluye | Venta en línea, respaldo y restauración, gestión de cuentas; dependencias NUBEPAC y PAGOSUR. |
+| Excluye | Analítica comercial, locales y despacho; deberán incorporarse en ciclos posteriores. |
+| Autoriza el alcance | Gerencia general. |
+| Capacidad | Nueve personas en tecnología y una persona con funciones de seguridad a media jornada. |
+| Presupuesto | 22 millones de pesos para seguridad durante 2027. |
+| Congelamiento | No se hacen cambios en producción entre el 25 de octubre y el 5 de diciembre de 2026. |
 
-Copien el material y verifiquen sus ocho archivos antes de editar:
+### Escala única y tolerancias
 
-~~~bash
-mkdir -p ~/inf44/LAB-08
-cp -a material/. ~/inf44/LAB-08/
-cd ~/inf44/LAB-08
-sha256sum -c manifest_entrega.sha256
-~~~
+| Nivel | Probabilidad en 24 meses | Impacto financiero |
+| ---: | --- | --- |
+| 1 | Cero ocurrencias y la condición necesaria no está presente | Menos de 5 millones de pesos |
+| 2 | Cero ocurrencias, pero existe una condición que lo hace posible | Desde 5 y menos de 20 millones |
+| 3 | Una ocurrencia | Desde 20 y menos de 50 millones |
+| 4 | Entre dos y nueve ocurrencias | Desde 50 y menos de 150 millones |
+| 5 | Diez o más ocurrencias, o la condición está activa | Desde 150 millones |
 
-Si aparece un FAILED, detengan el trabajo e informen al docente. Usen la guía de comandos para leer el paquete. Los antecedentes se consultan; solo se edita plantilla-entrega-leccion-08.md.
+- La indisponibilidad del sitio en campaña no puede superar 30 minutos entre el 1 y el 30 de noviembre; acepta la Gerencia general.
+- El retraso de analítica comercial puede alcanzar cinco días hábiles al mes; acepta la Jefatura de tecnología.
+- La protección de datos personales y mantener los datos de tarjeta fuera de sistemas propios son requisitos mínimos, no apetito al riesgo.
+- No se mezclan ni promedian etiquetas, CVSS, porcentajes ni productos ordinales con esta escala.
 
-## Paso 1 - Necesidades de decisión
+### Propiedad ya acordada
 
-**Consulten:** `necesidades-de-decision.csv` y `fichas-referencias.md`. **Completan:** sección 1 de `plantilla-entrega-leccion-08.md`.
+| Escenario | Propietario | Responsable interno del control |
+| --- | --- | --- |
+| Cuenta de una persona desvinculada permanece activa | Jefatura de recursos humanos | Jefatura de tecnología |
+| Respaldo de NUBEPAC no se puede restaurar | Jefatura de tecnología | Jefatura de tecnología, con NUBEPAC como ejecutor externo |
 
-Para ND-01 a ND-06 registren:
+## Paso 1 - Clasificar las necesidades de decisión
 
-1. tipo **A** (evaluación detallada), **B** (proceso continuo), **C** (comunicación de estado y brechas) o **R** (requisito mínimo);
-2. referencia o proceso que mejor ayuda a responderla;
-3. una razón breve apoyada en el dato de la fila.
+Usen estos tipos:
 
-Una obligación legal o contractual se incorpora como requisito del proceso. La evaluación ayuda a decidir cómo sostenerla.
+- **A:** evaluación detallada de escenarios.
+- **B:** proceso continuo de gestión.
+- **C:** comunicación de estado y brechas.
+- **R:** requisito mínimo que debe incorporarse al proceso.
 
-**Listo cuando:** las seis necesidades tienen tipo y razón; ND-05 y ND-06 no se tratan como riesgos que puedan ignorarse.
+Completen las tres últimas columnas. La razón debe usar un dato de la misma fila o del estado del caso anterior.
 
-## Paso 2 - Comparación aplicada
+| ID | Necesidad, quién la plantea, plazo y dato disponible | Tipo | Referencia o proceso útil | Razón basada en el caso |
+| --- | --- | :---: | --- | --- |
+| ND-01 | Gerencia general: ordenar riesgos y costos para asignar los 22 millones antes del 25 de octubre de 2026; ya existen escalas y tolerancias. | [Completar] | [Completar] | [Completar] |
+| ND-02 | Gerencia general: mostrar dónde está la empresa y dónde debería estar en doce meses, para fijar metas de 2027 en marzo de 2027; no existe una evaluación previa comparable. | [Completar] | [Completar] | [Completar] |
+| ND-03 | Encargado de seguridad: repetir el análisis cada año sin consultora, de forma permanente; hay una persona de seguridad a media jornada y ninguna metodología documentada. | [Completar] | [Completar] | [Completar] |
+| ND-04 | Jefatura de tecnología: definir condiciones para renovar NUBEPAC en marzo de 2027, incluido nivel de servicio y pruebas de restauración; el contrato actual no tiene nivel de servicio negociado. | [Completar] | [Completar] | [Completar] |
+| ND-05 | Adquirente de tarjetas: demostrar en su revisión anual que los datos de tarjeta permanecen fuera de los sistemas propios; el informe anual de PAGOSUR no declara su alcance. | [Completar] | [Completar] | [Completar] |
+| ND-06 | Asesoría legal externa: preparar el tratamiento de datos personales para la vigencia de la Ley 21.719, el 1 de diciembre de 2026; no existe inventario de esos datos. | [Completar] | [Completar] | [Completar] |
 
-**Consulten:** `fichas-referencias.md` y `contexto-organizacional.md`. **Completan:** sección 2 de la ficha.
+**Punto de control:** ND-05 y ND-06 deben quedar reconocidas como requisitos, no como riesgos que la organización pueda ignorar o aceptar.
 
-Comparen ISO/IEC 27005, NIST SP 800-30 y NIST CSF 2.0 en cuatro dimensiones:
+## Paso 2 - Comparar las referencias
 
-- propósito y resultado principal;
-- información de entrada que requiere;
-- esfuerzo para PACÍFICO RETAIL;
-- límite para este caso.
+### Tres fichas breves
 
-Al menos las filas de esfuerzo y límite deben citar un dato del caso; «es más conocido» no justifica una elección.
+| Referencia | Para qué sirve | Proceso o instrumento | Resultado principal | Límite importante | Esfuerzo típico |
+| --- | --- | --- | --- | --- | --- |
+| **ISO/IEC 27005:2022** | Gestionar riesgos de seguridad de la información dentro de un sistema de gestión. | Contexto; identificación, análisis y valoración; tratamiento y aceptación; comunicación; seguimiento y revisión. | Proceso repetible, registro de riesgos, plan de tratamiento y aceptaciones documentadas. | Debe adaptarse: no entrega una escala, fórmula ni catálogo obligatorio. | Moderado a alto si se implementa completa; puede ajustarse al tamaño y alcance de la organización. |
+| **NIST SP 800-30 Rev. 1** | Realizar y mantener evaluaciones de riesgo. | Preparar, evaluar, comunicar resultados y mantener la evaluación. | Escenarios con probabilidad, impacto, riesgo, supuestos e incertidumbre. | No desarrolla el tratamiento ni el gobierno del ciclo completo. | Alto si se aplica con todo su detalle: exige datos o juicio experto para cada escenario. |
+| **NIST CSF 2.0** | Describir y comunicar resultados de ciberseguridad. | Funciones GOVERN, IDENTIFY, PROTECT, DETECT, RESPOND y RECOVER; perfiles actual y objetivo. | Brecha entre el estado actual y el objetivo, comunicable a la dirección. | No calcula probabilidad, impacto ni costo por escenario. | Bajo a moderado para un primer perfil; crece con la cantidad de resultados que se evalúen. |
 
-**Listo cuando:** el cuadro permite distinguir el proceso completo, la evaluación de escenarios y la comunicación mediante perfiles.
+Las dos primeras filas del cuadro comparativo ya contienen hechos de las fichas. Revísenlas y completen las dos filas aplicadas al caso.
 
-## Paso 3 - Selección fundamentada
+| Dimensión | ISO/IEC 27005:2022 | NIST SP 800-30 Rev. 1 | NIST CSF 2.0 |
+| --- | --- | --- | --- |
+| Propósito y resultado | Proceso completo; registro, tratamiento y aceptación | Evaluación detallada; escenarios con probabilidad, impacto e incertidumbre | Comunicación de resultados; perfil actual, objetivo y brecha |
+| Información de entrada | Contexto, criterios, alcance y controles existentes | Propósito, alcance, supuestos, amenazas, vulnerabilidades y modelo de riesgo | Contexto, prioridades y evidencia del estado actual |
+| Esfuerzo para PACÍFICO RETAIL | [Completar con un dato del caso] | [Completar con un dato del caso] | [Completar con un dato del caso] |
+| Límite para este caso | [Completar] | [Completar] | [Completar] |
 
-**Consulten:** `fichas-referencias.md`, `contexto-organizacional.md` y `criterios-de-riesgo-l07.md`. **Completan:** sección 3 de la ficha.
+```text
+Referencia que puede ordenar el ciclo completo y por qué: [Completar]
 
-1. Elijan un **proceso rector del ciclo completo** y justifíquenlo con dos datos del caso. Un ciclo completo incluye tratamiento, aceptación y seguimiento.
-2. Indiquen qué referencia apoyará la evaluación de escenarios y cuál, si se necesita, apoyará la comunicación. Precisen qué parte usarán de cada una.
-3. Declaren la escala única acordada en la Lección 07, que está en `criterios-de-riesgo-l07.md`, quién coordina el ciclo y una limitación de su propuesta.
+Referencia que puede apoyar la evaluación de escenarios y por qué: [Completar]
 
-Se admite un proceso simplificado de ISO/IEC 27005. Si eligen SP 800-30 para evaluar, nombren aparte el proceso que gobierna las etapas que esa guía no cubre.
+Referencia que puede apoyar la comunicación y por qué: [Completar]
+```
 
-**Listo cuando:** otra persona sabe qué referencia ordena el ciclo y cuál cumple cada función de apoyo.
+**Punto de control:** cada celda de esfuerzo y límite cita un dato del estado del caso, como la capacidad, el plazo o el alcance; «es más conocida» no justifica nada.
 
-## Paso 4 - Bosquejo del ciclo
+## Paso 3 - Seleccionar un enfoque
 
-**Consulten:** la sección 3 de su ficha y `contexto-organizacional.md`, para identificar los hechos que obligan a revisar el ciclo. **Completan:** sección 4 de la ficha.
+Consideren simultáneamente estos hechos:
 
-Completen las siete etapas ya nombradas en la ficha. Para cada una escriban **un artefacto verificable** y **un hecho o frecuencia que obligue a revisarlo**. No diseñen todavía la matriz ni calculen niveles.
+- la gerencia pide resultados en tres semanas, pero el alcance acordado no cubre toda la empresa;
+- existe una persona de seguridad a media jornada;
+- ya hay una escala común y no debe reemplazarse por las escalas de ejemplo de otra referencia;
+- NUBEPAC debe renegociarse en marzo de 2027;
+- la gerencia necesita decidir y también comprender el estado de la organización.
 
-La Lección 09 construye inventario y escenarios; la 10 valora, prioriza y propone tratamiento; la 11 trabaja política y auditoría. La comunicación y la revisión acompañan todo el ciclo.
+```text
+Proceso rector del ciclo completo: [Completar]
 
-**Listo cuando:** el ciclo no termina en una matriz y contiene un disparador, como el cambio del contrato con NUBEPAC o un incidente que supere una tolerancia.
+Dos datos del caso que justifican la selección: [Completar]
 
-## Paso 5 - Recomendación y cierre del archivo
+Apoyo para evaluar escenarios y parte que se usará: [Completar]
 
-**Consulten:** las secciones 1 a 4 de su ficha y `contexto-organizacional.md`, sección «Solicitud recibida». **Completan:** sección 5 de la ficha y `entrega_equipo.sha256`.
+Apoyo para comunicar y parte que se usará, o «no necesario»: [Completar]
 
-Redacten una recomendación breve para la gerencia. Indiquen proceso rector, apoyos, escala única, primera entrega y límite del alcance de tres semanas. Eviten siglas sin explicar.
+Escala única y cargo que coordinará el ciclo: [Completar]
 
-Comprueben visualmente las secciones 1 a 5 y generen un hash provisional:
+Limitación o dato que falta verificar: [Completar]
+```
 
-~~~bash
-sha256sum plantilla-entrega-leccion-08.md > entrega_equipo.sha256
-sha256sum -c entrega_equipo.sha256
-~~~
+Se admite un proceso simplificado de ISO/IEC 27005. Si seleccionan SP 800-30 para evaluar, nombren por separado el proceso que gobernará tratamiento, aceptación y seguimiento.
 
-El ticket individual y la última casilla se completan durante el cierre; por eso aún habrá marcadores pendientes.
+**Punto de control:** otra persona puede leer esta sección y saber qué referencia ordena el ciclo completo y qué función distinta cumple cada apoyo.
 
-## Cierre individual
+## Paso 4 - Bosquejar el ciclo
 
-**Consulten:** las tres preguntas de la sección 6 de la ficha. **Completan:** sección 6, la comprobación de entrega y `entrega_equipo.sha256`.
+Para cada etapa indiquen **un artefacto verificable** y **un hecho o frecuencia que obligue a revisarlo**. Escriban ambos elementos en la misma celda con la forma `artefacto — disparador`.
 
-Cada integrante responde **una** de las tres preguntas de la sección 6 de la ficha en una o dos frases. El registrador incorpora las respuestas, marca las casillas y ejecuta el control final:
+Pueden usar, adaptar o descartar estos antecedentes: campaña de noviembre; revisión anual del adquirente; vigencia de la Ley 21.719; renovación de NUBEPAC en marzo; cambio de proveedor o sistema; incidente que supere una tolerancia; aparición de información nueva; revisión mensual, trimestral o anual.
 
-~~~bash
-grep -n '\[ \]' plantilla-entrega-leccion-08.md
-sha256sum plantilla-entrega-leccion-08.md > entrega_equipo.sha256
-sha256sum -c entrega_equipo.sha256
-~~~
+| Etapa | Artefacto verificable — disparador de revisión |
+| --- | --- |
+| Contexto y criterios | [Completar] |
+| Identificación | [Completar] |
+| Análisis | [Completar] |
+| Valoración y priorización | [Completar] |
+| Tratamiento y aceptación | [Completar] |
+| Comunicación y consulta | [Completar] |
+| Seguimiento y revisión | [Completar] |
 
-El primer comando debe quedar sin salida. El docente usará una fila de `evaluaciones-previas.csv` y otra de `propuestas-tratamiento.csv` para discutir por qué no se mezclan escalas y por qué siempre queda un riesgo residual; ese análisis detallado no forma parte del producto obligatorio.
+**Punto de control:** el ciclo no termina en una matriz y contiene al menos un disparador ligado al contrato de NUBEPAC o a un incidente que supere una tolerancia.
 
-## Si terminan antes
+## Paso 5 - Redactar la recomendación ejecutiva
 
-**Consulten:** `evaluaciones-previas.csv` y `criterios-de-riesgo-l07.md`, o bien `propuestas-tratamiento.csv`. **Completan:** sección «Ampliación opcional» de la ficha.
+La solicitud original de la gerencia fue evaluar todos los riesgos de la empresa en tres semanas, ordenarlos y calcular cuánto cuesta cerrarlos. El alcance vigente demuestra que una parte de ese pedido debe continuar en ciclos posteriores.
 
-Elijan solo una ampliación, sin asignar niveles de riesgo:
+Redacten un máximo de 120 palabras. Indiquen el proceso rector, los apoyos, la escala, la primera entrega posible y lo que queda fuera de las tres semanas. Eviten siglas sin explicar.
 
-- diagnosticar por qué las cuatro filas de `evaluaciones-previas.csv` no se comparan directamente con la escala común; o
-- clasificar las cinco filas de `propuestas-tratamiento.csv` e indicar qué residual podría quedar, sin priorizar ni aceptar formalmente ninguna propuesta.
+> [Completar]
 
-## Entrega
+**Punto de control:** la recomendación no supera 120 palabras y declara qué parte del pedido queda fuera de las tres semanas.
 
-Entreguen plantilla-entrega-leccion-08.md y entrega_equipo.sha256. No conviertan el archivo a PDF después de generar su hash.
+## Cierre
+
+Respondan brevemente las tres preguntas.
+
+1. ¿Qué parte del ciclo debe revisarse si NUBEPAC cambia el contrato?
+2. El fabricante del punto de venta informó una vulnerabilidad con CVSS 8,1 sobre 10. ¿Por qué un puntaje CVSS alto no equivale al riesgo del negocio?
+3. ¿Qué parte del pedido de gerencia queda fuera de tres semanas y cómo se comunica?
+
+| Pregunta | Respuesta |
+| :---: | --- |
+| 1 | [Completar] |
+| 2 | [Completar] |
+| 3 | [Completar] |
+
+## Comprobación final
+
+- [ ] Las seis necesidades tienen tipo, referencia y razón basada en el caso.
+- [ ] La comparación distingue ciclo completo, evaluación y comunicación.
+- [ ] La selección nombra un proceso rector y apoyos acotados.
+- [ ] La propuesta conserva la escala acordada en la Lección 07.
+- [ ] Las siete etapas incluyen artefacto y disparador.
+- [ ] No se asignaron niveles de riesgo ni se priorizaron tratamientos.
+- [ ] La recomendación no supera 120 palabras y declara qué queda fuera.
+- [ ] El cierre responde brevemente las tres preguntas.
+
+## Ampliación opcional
+
+Solo si el producto obligatorio está cerrado, elijan **una** alternativa.
+
+### A. Diagnosticar escalas incompatibles
+
+| ID | Objeto | Valor informado | Qué mide realmente |
+| --- | --- | --- | --- |
+| EP-01 | Caída del sitio en campaña | Alto | Etiqueta sin descriptor ni periodo de referencia |
+| EP-02 | Cuenta de persona desvinculada activa | 4 × 2 = 8 | Producto ordinal; impacto medido en horas de TI |
+| EP-03 | Vulnerabilidad del punto de venta | CVSS 8,1 | Severidad técnica sin contexto de la organización |
+| EP-04 | Fraude con tarjetas | 70 % | Porcentaje de jefaturas preocupadas |
+
+Expliquen por qué las cuatro filas no se comparan directamente y qué dato se necesita para expresarlas con la escala común:
+
+> [Completar solo si eligieron esta ampliación]
+
+### B. Clasificar propuestas de tratamiento
+
+| ID | Propuesta | Costo anual |
+| --- | --- | ---: |
+| PT-01 | Informar cada desvinculación el mismo día, desactivar en 24 horas y revisar cuentas mensualmente | 2 millones |
+| PT-02 | Mantener respaldo independiente de NUBEPAC y probar restauración trimestral | 9 millones |
+| PT-03 | Eliminar la copia identificable usada en analítica y trabajar con datos agregados | Sin costo directo |
+| PT-04 | Contratar un seguro que cubra fraude y costos de notificación | 6 millones |
+| PT-05 | No agregar acciones y revisar mensualmente el retraso de analítica | Sin costo directo |
+
+Clasifiquen cada propuesta como evitar, modificar, compartir o retener, e indiquen un residual que podría permanecer. No las prioricen ni las acepten formalmente:
+
+> [Completar solo si eligieron esta ampliación]
