@@ -1,0 +1,6 @@
+id,escenario,propuesta,costo_anual_estimado,propone
+PT-01,R-01 cuenta de persona desvinculada activa,Recursos humanos informa cada desvinculación el mismo día y TI desactiva la cuenta en 24 horas con revisión mensual de cuentas activas,2 millones de pesos en horas internas,Encargado de seguridad
+PT-02,R-02 respaldo de NUBEPAC no restaurable,Contratar un respaldo independiente del proveedor y probar la restauración cada trimestre,9 millones de pesos,Jefatura de tecnología
+PT-03,Exposición de la copia de la base de clientes usada en analítica,Eliminar la copia con datos identificables y trabajar la analítica solo con datos agregados,sin costo directo,Asesoría legal externa
+PT-04,Pérdida por fraude con tarjetas en el sitio,Contratar un seguro de ciberriesgo que cubra pérdidas por fraude y costos de notificación,6 millones de pesos,Gerencia comercial
+PT-05,Retraso en analítica comercial,No aplicar acciones adicionales y revisar cada mes la fecha de entrega del informe,sin costo directo,Jefatura de tecnología

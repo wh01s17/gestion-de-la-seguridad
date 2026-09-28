@@ -1,0 +1,5 @@
+id,fuente,fecha,objeto_evaluado,escala_usada,valor_informado,que_describe_la_escala
+EP-01,Consultora externa,2025-05,Caída del sitio en campaña,tres etiquetas alto medio bajo,alto,etiquetas sin descriptores ni periodo de referencia
+EP-02,Autoevaluación de TI,2026-02,Cuenta de persona desvinculada activa,probabilidad 1 a 5 multiplicada por impacto técnico 1 a 5,4 x 2 = 8,impacto medido en horas de trabajo de TI para corregir
+EP-03,Informe del fabricante del punto de venta,2026-07,Vulnerabilidad del sistema de punto de venta,CVSS v3.1 Base Score de 0 a 10,8.1,severidad técnica de la vulnerabilidad sin contexto de la organización
+EP-04,Encuesta a jefaturas,2026-04,Fraude con tarjetas en el sitio,porcentaje de jefaturas que se declaran preocupadas,70 %,percepción de las personas encuestadas

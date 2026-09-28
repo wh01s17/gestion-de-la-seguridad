@@ -1,0 +1,7 @@
+id,necesidad,quien_la_plantea,decision_que_habilita,plazo,informacion_disponible
+ND-01,Lista de riesgos ordenada de mayor a menor con el costo de tratarlos,Gerencia general,Asignar el presupuesto de seguridad 2027 de 22 millones ya aprobado,antes del 25 de octubre de 2026,escalas y tolerancias definidas en la Lección 07
+ND-02,Mostrar a la dirección dónde está la empresa hoy y dónde debería estar en doce meses,Gerencia general,Fijar metas de seguridad para 2027 y comunicarlas,marzo de 2027,no existe una evaluación previa comparable
+ND-03,Repetir el análisis cada año sin contratar una consultora,Encargado de seguridad,Sostener el proceso con una persona a media jornada,permanente,ninguna metodología documentada
+ND-04,Decidir las condiciones de renovación del contrato de alojamiento,Jefatura de tecnología,Exigir a NUBEPAC nivel de servicio y pruebas de restauración,marzo de 2027,contrato estándar sin nivel de servicio negociado
+ND-05,Demostrar al adquirente que los datos de tarjeta siguen fuera de los sistemas propios,Adquirente de tarjetas,Mantener el servicio de pago con tarjeta,revisión anual,informe anual de PAGOSUR con alcance no declarado
+ND-06,Preparar el tratamiento de datos personales para la entrada en vigencia de la Ley 21.719,Asesoría legal externa,Ajustar los procesos que tratan datos de clientes y trabajadores,1 de diciembre de 2026,no existe inventario de datos personales
