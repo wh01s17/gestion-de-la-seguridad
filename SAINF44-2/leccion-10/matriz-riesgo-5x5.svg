@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 960 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="matriz-riesgo-title matriz-riesgo-desc">
+      <title id="matriz-riesgo-title">Matriz de riesgo 5 × 5 con bandas de visualización</title>
+      <desc id="matriz-riesgo-desc">Matriz de probabilidad por impacto de 1 a 5. Cada celda muestra el producto y su banda: bajo de 1 a 4, moderado de 5 a 9, alto de 10 a 16 y crítico de 17 a 25. Se destacan dos celdas con producto 10 que cuentan historias distintas, P2 por I5 y P5 por I2, y se ubican los tres riesgos del caso ficticio VIÑA DEL ESTE: V-01 en P3 por I4, V-02 en P2 por I5 y V-03 en P2 por I5 como valor provisional.</desc>
+      <defs>
+        <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- Cuadrícula: origen x=110, y=48; celdas 72 × 60. Fila superior = P5. -->
+      <rect x="110" y="288" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="110" y="288" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="118" y="306" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">1</text>
+      <rect x="182" y="288" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="182" y="288" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="190" y="306" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">2</text>
+      <rect x="254" y="288" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="254" y="288" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="262" y="306" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">3</text>
+      <rect x="326" y="288" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="326" y="288" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="334" y="306" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">4</text>
+      <rect x="398" y="288" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="398" y="288" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="406" y="306" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">5</text>
+      <rect x="110" y="228" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="110" y="228" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="118" y="246" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">2</text>
+      <rect x="182" y="228" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="182" y="228" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="190" y="246" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">4</text>
+      <rect x="254" y="228" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="254" y="228" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="262" y="246" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">6</text>
+      <rect x="326" y="228" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="326" y="228" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="334" y="246" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">8</text>
+      <rect x="398" y="228" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="398" y="228" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="406" y="246" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">10</text>
+      <rect x="110" y="168" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="110" y="168" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="118" y="186" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">3</text>
+      <rect x="182" y="168" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="182" y="168" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="190" y="186" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">6</text>
+      <rect x="254" y="168" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="254" y="168" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="262" y="186" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">9</text>
+      <rect x="326" y="168" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="326" y="168" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="334" y="186" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">12</text>
+      <rect x="398" y="168" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="398" y="168" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="406" y="186" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">15</text>
+      <rect x="110" y="108" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="110" y="108" width="72" height="60" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="118" y="126" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">4</text>
+      <rect x="182" y="108" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="182" y="108" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="190" y="126" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">8</text>
+      <rect x="254" y="108" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="254" y="108" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="262" y="126" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">12</text>
+      <rect x="326" y="108" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="326" y="108" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="334" y="126" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">16</text>
+      <rect x="398" y="108" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="398" y="108" width="72" height="60" fill="#eb6c36" fill-opacity="0.48"/>
+      <text x="406" y="126" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">20</text>
+      <rect x="110" y="48" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="110" y="48" width="72" height="60" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="118" y="66" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">5</text>
+      <rect x="182" y="48" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="182" y="48" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="190" y="66" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">10</text>
+      <rect x="254" y="48" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="254" y="48" width="72" height="60" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="262" y="66" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">15</text>
+      <rect x="326" y="48" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="326" y="48" width="72" height="60" fill="#eb6c36" fill-opacity="0.48"/>
+      <text x="334" y="66" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">20</text>
+      <rect x="398" y="48" width="72" height="60" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15" stroke-width="1"/>
+      <rect x="398" y="48" width="72" height="60" fill="#eb6c36" fill-opacity="0.48"/>
+      <text x="406" y="66" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">25</text>
+
+      <!-- Celdas con producto 10 -->
+      <rect x="399.5" y="229.5" width="69" height="57" fill="none" stroke="#2e5aa8" stroke-width="1.8"/>
+      <rect x="183.5" y="49.5" width="69" height="57" fill="none" stroke="#2e5aa8" stroke-width="1.8"/>
+
+      <!-- Ejes -->
+      <text x="96" y="322" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="end">P1</text>
+      <text x="96" y="262" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="end">P2</text>
+      <text x="96" y="202" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="end">P3</text>
+      <text x="96" y="142" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="end">P4</text>
+      <text x="96" y="82" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="end">P5</text>
+      <text x="146" y="368" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="middle">I1</text>
+      <text x="218" y="368" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="middle">I2</text>
+      <text x="290" y="368" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="middle">I3</text>
+      <text x="362" y="368" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="middle">I4</text>
+      <text x="434" y="368" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace" text-anchor="middle">I5</text>
+      <text x="290" y="394" fill="#2d3142" font-size="14" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Impacto: consecuencia si el escenario ocurre →</text>
+      <text x="44" y="198" fill="#2d3142" font-size="14" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle" transform="rotate(-90 44 198)">Probabilidad en 24 meses →</text>
+
+      <!-- Riesgos del ejemplo -->
+      <circle cx="362" cy="196" r="12" fill="#2d3142"/>
+      <text x="362" y="200" fill="#ffffff" font-size="10" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V1</text>
+      <circle cx="418" cy="264" r="12" fill="#2d3142"/>
+      <text x="418" y="268" fill="#ffffff" font-size="10" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V2</text>
+      <circle cx="450" cy="264" r="12" fill="#ffffff" stroke="#2d3142" stroke-width="1.4" stroke-dasharray="3,2"/>
+      <text x="450" y="268" fill="#2d3142" font-size="10" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V3</text>
+
+      <!-- PANEL DERECHO -->
+      <text x="530" y="60" fill="#7a8399" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">BANDAS DE VISUALIZACIÓN</text>
+      <rect x="530" y="74" width="28" height="18" rx="3" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15"/>
+      <rect x="530" y="74" width="28" height="18" rx="3" fill="#2d3142" fill-opacity="0.04"/>
+      <text x="570" y="87" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Bajo</text>
+      <text x="660" y="87" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace">1 a 4</text>
+      <rect x="530" y="102" width="28" height="18" rx="3" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15"/>
+      <rect x="530" y="102" width="28" height="18" rx="3" fill="#eb6c36" fill-opacity="0.10"/>
+      <text x="570" y="115" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Moderado</text>
+      <text x="660" y="115" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace">5 a 9</text>
+      <rect x="530" y="130" width="28" height="18" rx="3" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15"/>
+      <rect x="530" y="130" width="28" height="18" rx="3" fill="#eb6c36" fill-opacity="0.26"/>
+      <text x="570" y="143" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Alto</text>
+      <text x="660" y="143" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace">10 a 16</text>
+      <rect x="530" y="158" width="28" height="18" rx="3" fill="#ffffff" stroke="#2d3142" stroke-opacity="0.15"/>
+      <rect x="530" y="158" width="28" height="18" rx="3" fill="#eb6c36" fill-opacity="0.48"/>
+      <text x="570" y="171" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Crítico</text>
+      <text x="660" y="171" fill="#4f5d75" font-size="12" font-family="'Geist Mono', monospace">17 a 25</text>
+
+      <text x="530" y="212" fill="#7a8399" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">MISMO PRODUCTO, DISTINTA HISTORIA</text>
+      <rect x="530" y="224" width="28" height="18" rx="3" fill="none" stroke="#2e5aa8" stroke-width="1.8"/>
+      <text x="570" y="237" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">P2 × I5 = 10</text>
+      <text x="670" y="237" fill="#4f5d75" font-size="12" font-family="'Geist', sans-serif">poco frecuente, consecuencia extrema</text>
+      <rect x="530" y="252" width="28" height="18" rx="3" fill="none" stroke="#2e5aa8" stroke-width="1.8"/>
+      <text x="570" y="265" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">P5 × I2 = 10</text>
+      <text x="670" y="265" fill="#4f5d75" font-size="12" font-family="'Geist', sans-serif">frecuente o activo, consecuencia acotada</text>
+
+      <text x="530" y="306" fill="#7a8399" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">EJEMPLO · VIÑA DEL ESTE (FICTICIO)</text>
+      <circle cx="544" cy="327" r="10" fill="#2d3142"/>
+      <text x="544" y="331" fill="#ffffff" font-size="9" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V1</text>
+      <text x="570" y="331" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">P3 × I4 = 12</text>
+      <text x="670" y="331" fill="#4f5d75" font-size="12" font-family="'Geist', sans-serif">interrupción del proveedor de rastreo</text>
+      <circle cx="544" cy="355" r="10" fill="#2d3142"/>
+      <text x="544" y="359" fill="#ffffff" font-size="9" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V2</text>
+      <text x="570" y="359" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">P2 × I5 = 10</text>
+      <text x="670" y="359" fill="#4f5d75" font-size="12" font-family="'Geist', sans-serif">correo con autenticación heredada</text>
+      <circle cx="544" cy="383" r="10" fill="#ffffff" stroke="#2d3142" stroke-width="1.4" stroke-dasharray="3,2"/>
+      <text x="544" y="387" fill="#2d3142" font-size="9" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">V3</text>
+      <text x="570" y="387" fill="#2d3142" font-size="12" font-family="'Geist Mono', monospace">P2 × I5 = 10</text>
+      <text x="670" y="387" fill="#4f5d75" font-size="12" font-family="'Geist', sans-serif">provisional: función PDF por validar</text>
+
+      <!-- NOTA -->
+      <line x1="20" y1="420" x2="940" y2="420" stroke="#2d3142" stroke-opacity="0.10" stroke-width="0.8"/>
+      <line x1="20" y1="446" x2="34" y2="446" stroke="#eb6c36" stroke-width="2"/>
+      <text x="44" y="450" fill="#2d3142" font-size="12" font-family="'Geist', sans-serif">La banda ordena y comunica. No autoriza aceptar un riesgo ni reemplaza tolerancias, requisitos o juicio del propietario.</text>
+    </svg>
