@@ -173,7 +173,7 @@ Windows incluye **Windows PowerShell 5.1** (`powershell.exe`, pestaña "Windows 
 oh-my-posh init pwsh --config 'pure' | Invoke-Expression
 ```
 
-> Esta línea debe ser la **última** del perfil.
+> Esta línea debe ir al final del perfil, solo antes de la de zoxide.
 
 3. Guardamos y recargamos con `. $PROFILE`
 
@@ -278,6 +278,8 @@ Agregar esta línea en `$PROFILE` (reemplaza `cd` por zoxide y agrega `cdi` para
 ```powershell
 Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
 ```
+
+> Esta línea debe ser la **última** del perfil, después de la de Oh My Posh. zoxide registra los directorios visitados envolviendo la función `prompt`; si Oh My Posh se inicializa después, la reemplaza y zoxide deja de aprender rutas (y muestra el aviso *detected a possible configuration issue*).
 
 ## Instalar y configurar eza
 

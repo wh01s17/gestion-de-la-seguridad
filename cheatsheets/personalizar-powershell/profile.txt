@@ -1,8 +1,6 @@
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 
-Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
-
 Remove-Item Alias:ls -Force -ErrorAction Ignore
 function ls { eza --icons @args }
 function l { eza --icons @args }
@@ -10,3 +8,5 @@ function ll { eza --icons -l @args }
 function lla { eza --icons -la @args }
 
 oh-my-posh init pwsh --config 'pure' | Invoke-Expression
+
+Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })

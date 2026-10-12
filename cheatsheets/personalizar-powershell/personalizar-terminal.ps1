@@ -10,7 +10,8 @@
     - Configura Windows Terminal: Snazzy, fuente, opacidad, acrilico y perfil predeterminado
     - Crea o actualiza $PROFILE de PowerShell 7 y Windows PowerShell 5.1:
         * La configuracion gestionada va en un bloque marcado al final del perfil, con
-          Oh My Posh como ultima linea; volver a ejecutar el script no duplica nada
+          Oh My Posh y luego zoxide al final (zoxide envuelve el prompt de Oh My Posh);
+          volver a ejecutar el script no duplica nada
         * Las lineas propias se conservan y lo que ya configuran (oh-my-posh, zoxide, ls, ...)
           no se agrega al bloque
 
@@ -953,6 +954,9 @@ function Complete-ProfileState($State) {
         }
     }
     if (-not $State.Posh) { return }
+    if ($State.OwnZoxide) {
+        Write-Warn 'zoxide se inicializa fuera del bloque, antes de Oh My Posh, y no registrara directorios. Borra esa linea para que el script lo agregue al final.'
+    }
 
     # Tema exportado que ya no existe.
     $path = Resolve-PoshConfigPath $State.PoshConfig
@@ -970,7 +974,6 @@ function New-ProfileBlock($State, [bool]$Legacy) {
     if ($State.TerminalIcons) { 'Import-Module Terminal-Icons' }
     if ($State.ListView) { if ($Legacy) { $ListViewGuarded } else { $ListViewLine } }
     if ($State.MenuComplete) { $MenuCompleteLine }
-    if ($State.Zoxide) { "Invoke-Expression (& { (zoxide init powershell$(if ($State.ZoxideCd) { ' --cmd cd' }) | Out-String) })" }
     if ($State.Eza) {
         'Remove-Item Alias:ls -Force -ErrorAction Ignore'
         'function ls { eza --icons @args }'
@@ -982,6 +985,9 @@ function New-ProfileBlock($State, [bool]$Legacy) {
         $config = if ($State.PoshConfig) { ' --config ' + (Format-PoshConfig $State.PoshConfig) } else { '' }
         "oh-my-posh init pwsh$config | Invoke-Expression"
     }
+    # zoxide registra los directorios envolviendo la funcion prompt, asi que va despues de
+    # Oh My Posh: si no, Oh My Posh reemplaza el prompt y zoxide deja de aprender rutas.
+    if ($State.Zoxide) { "Invoke-Expression (& { (zoxide init powershell$(if ($State.ZoxideCd) { ' --cmd cd' }) | Out-String) })" }
 }
 
 # Lineas propias tal cual (sin lineas vacias al final) y el bloque gestionado al final.
