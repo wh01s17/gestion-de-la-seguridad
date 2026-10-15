@@ -55,7 +55,7 @@ Las ponderaciones suman el 100% de la calificación.
 | --- | ---: | --- | --- |
 | Evaluación UA1 | 30% | 15-09-2026 | 14-09-2026 |
 | Evaluación UA2 | 20% | 27-10-2026 | 02-11-2026 |
-| Evaluación UA3 | 20% | 01-12-2026 | 07-12-2026 |
+| Evaluación UA3 | 20% | 24-11-2026 | 30-11-2026 |
 | Evaluación final | 30% | 15-12-2026 | 14-12-2026 |
 
 La evaluación final de SAINF44-1 recupera la clase suspendida por el feriado del 8 de diciembre; la evaluación final de SAINF44-2 recupera la clase suspendida por el feriado del 12 de octubre. Cualquier reprogramación se comunicará mediante los canales institucionales de la asignatura.
@@ -64,10 +64,11 @@ La evaluación final de SAINF44-1 recupera la clase suspendida por el feriado de
 
 La secuencia común comprende 18 lecciones:
 
-1. **Lecciones 01–06 - Ataques y controles:** Cyber Kill Chain, vectores, clasificación y priorización de controles, AAA, firewall e IDS. La lección 06 integra la UA1.
-2. **Lecciones 07–12 - Riesgos y políticas:** contexto, activos, amenazas, vulnerabilidades, matrices, tratamiento, riesgo residual, diseño y auditoría de políticas. La lección 12 integra la UA2.
-3. **Lecciones 13–17 - Recuperación y respuesta:** BIA, RTO, RPO, continuidad, recuperación frente a desastres, respuesta a incidentes, ejercicios, métricas y mitigación. La lección 17 integra la UA3.
-4. **Lección 18 - Evaluación final:** caso organizacional que relaciona riesgos, controles, políticas, vulnerabilidades, respuesta y recuperación.
+1. **Lecciones 01-06 - Ataques y controles:** Cyber Kill Chain, vectores, clasificación y priorización de controles, AAA, firewall e IDS. La lección 06 integra la UA1.
+2. **Lecciones 07-12 - Riesgos y políticas:** contexto, activos, amenazas, vulnerabilidades, matrices, tratamiento, riesgo residual, diseño y auditoría de políticas. La lección 12 integra la UA2.
+3. **Lecciones 13-16 - Recuperación y respuesta:** BIA, RTO, RPO, continuidad, recuperación frente a desastres, respuesta a incidentes, métricas y mitigación. La lección 16 integra la UA3.
+4. **Lección 17 - Ejercicio integrador:** CTF de gestión y ejercicio de mesa, opcional y sin calificación. Es el bloque colchón del semestre y puede omitirse para absorber una suspensión.
+5. **Lección 18 - Evaluación final:** caso organizacional que relaciona riesgos, controles, políticas, vulnerabilidades, respuesta y recuperación.
 
 Ambas secciones desarrollan el mismo núcleo formativo en 18 clases de tres horas, de acuerdo con el calendario institucional de cada jornada.
 
