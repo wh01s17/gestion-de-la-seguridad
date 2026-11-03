@@ -1,0 +1,7 @@
+id,proceso,criticidad,mtpd_horas,sistemas,modo_manual
+P1,Venta en línea (e-commerce),Alta,4,Tienda cloud; Pasarela de pago; Catálogo,Parcial
+P2,Despacho y logística,Alta,8,ERP; Integración transportistas,No
+P3,Facturación electrónica,Alta,24,ERP; Servicio tributario,Parcial
+P4,Atención al cliente,Media,24,Telefonía; CRM cloud,Sí
+P5,Gestión de inventario,Alta,8,ERP; Lectores de bodega,No
+P6,Remuneraciones,Baja,72,Sistema RRHH local,Sí
