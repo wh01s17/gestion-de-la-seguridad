@@ -8,14 +8,13 @@ El script [`personalizar-terminal.ps1`](personalizar-terminal.ps1) aplica todo l
 powershell -ExecutionPolicy Bypass -File .\personalizar-terminal.ps1
 ```
 
-- Solo pregunta por lo que falta; lo que ya está configurado (tema, fuente, colores, alias propios) se mantiene.
-- Avisa si Oh My Posh está desactualizado y ofrece actualizarlo (incluida la reinstalación que pide winget cuando cambia el tipo de instalador).
-- Para elegir el tema muestra una galería paginada con el nombre y un ejemplo del prompt de cada tema; se puede buscar escribiendo parte del nombre.
-- Ofrece mostrar el venv de Python y la versión de Node.js con cualquier tema (ver [esta sección](#mostrar-el-venv-de-python-y-la-versión-de-nodejs-en-cualquier-tema)).
+- Solo pregunta por lo que falta; lo que ya está configurado (fuente, colores, alias propios) se mantiene.
+- Copia la configuración de Starship de [wh01s17/dotfiles](https://github.com/wh01s17/dotfiles) (la misma que en Linux, ver [Configurar Starship](#configurar-starship)); si la local es distinta, pregunta antes de reemplazarla.
+- Si el perfil usa Oh My Posh, ofrece reemplazarlo por Starship y, cuando ya ningún perfil lo usa, desinstalarlo (los temas `*.omp.json` guardados no se borran).
 - Deja la configuración gestionada en un bloque marcado al final del perfil (`# >>> post-install-linux ... >>>`); se puede ejecutar varias veces sin duplicar nada.
-- Las líneas propias del perfil no se modifican: si ya configuran algo (por ejemplo, `oh-my-posh`, `zoxide` o un alias de `ls`), el script lo respeta y no lo agrega al bloque. Para que lo gestione el script, borra esas líneas antes de ejecutarlo.
+- Las líneas propias del perfil no se modifican: si ya configuran algo (por ejemplo, `starship`, `zoxide` o un alias de `ls`), el script lo respeta y no lo agrega al bloque. Para que lo gestione el script, borra esas líneas antes de ejecutarlo. La única excepción son las líneas que cargan Oh My Posh: ofrece comentarlas al pasar a Starship.
 - Respalda cada archivo antes de modificarlo (`<archivo>.bak-<fecha>`).
-- Opciones: `-DryRun` (muestra lo que haría sin cambiar nada), `-Yes` (usa la respuesta por defecto en cada pregunta), `-Theme <nombre>` (tema propuesto, por defecto `pure`), `-SkipInstall` (no usa winget).
+- Opciones: `-DryRun` (muestra lo que haría sin cambiar nada), `-Yes` (usa la respuesta por defecto en cada pregunta), `-StarshipConfig <url o ruta>` (`starship.toml` que se copia, por defecto el de dotfiles), `-SkipInstall` (no usa winget).
 
 Las secciones siguientes explican cada paso para hacerlo a mano.
 
@@ -23,46 +22,17 @@ Las secciones siguientes explican cada paso para hacerlo a mano.
 
 - **Terminal** -> Microsoft Store
 - **PowerShell** -> https://github.com/PowerShell/PowerShell/releases
-- **Oh-My-Posh**:
+- **Starship**:
 
 ```powershell
-winget install JanDeDobbeleer.OhMyPosh --source winget
+winget install --id Starship.Starship --exact --source winget
 ```
 
-Para actualizarlo más adelante, ver [Actualizar Oh My Posh](#actualizar-oh-my-posh).
-
-## Actualizar Oh My Posh
-
-1. Revisar la versión instalada y compararla con la última publicada en https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest:
+Para actualizarlo más adelante:
 
 ```powershell
-oh-my-posh version
+winget upgrade --id Starship.Starship --exact --source winget
 ```
-
-2. Actualizar con winget (el mismo método con el que se instaló):
-
-```powershell
-winget upgrade JanDeDobbeleer.OhMyPosh --source winget
-```
-
-También se puede usar el comando propio de Oh My Posh:
-
-```powershell
-oh-my-posh upgrade
-```
-
-3. Cerrar y volver a abrir la terminal, y confirmar la versión nueva con `oh-my-posh version`.
-
-Si `winget upgrade` responde que *la tecnología de instalación es diferente de la versión actual instalada*, Oh My Posh se instaló con el instalador clásico y la versión nueva de winget es un paquete MSIX. En ese caso hay que desinstalar e instalar de nuevo (los perfiles y los temas guardados en la carpeta de usuario no se modifican):
-
-```powershell
-winget uninstall --id JanDeDobbeleer.OhMyPosh --exact --source winget
-winget install --id JanDeDobbeleer.OhMyPosh --exact --source winget
-```
-
-> La actualización automática de Oh My Posh nunca salta de versión mayor (por ejemplo, de 27.x a 31.x) para evitar cambios incompatibles; esas actualizaciones hay que hacerlas a mano con los comandos anteriores.
-
-> Conviene mantenerlo al día: los temas y la documentación actuales usan la clave `options` en los segmentos, mientras que versiones antiguas (como la 27.x) solo entienden `properties` e ignoran `options` sin mostrar error. Si un tema copiado de la documentación no aplica sus opciones (estilos, formatos, etc.), lo más probable es que Oh My Posh esté desactualizado.
 
 ## Combinación de colores
 
@@ -74,14 +44,9 @@ winget install --id JanDeDobbeleer.OhMyPosh --exact --source winget
 
 ## Seleccionar fuente
 
-1. Instalar la fuente (recomendada **Meslo**) sin permisos de administrador; queda instalada para el usuario actual:
-
-```powershell
-oh-my-posh font install meslo
-```
-
-> Ejecutar `oh-my-posh font install` sin argumentos muestra un selector con todas las Nerd Fonts disponibles.
-> Como administrador, la fuente se instala para todo el sistema.
+1. Instalar la fuente (recomendada **Meslo**) sin permisos de administrador:
+    - Descargar `Meslo.zip` desde https://www.nerdfonts.com/font-downloads y descomprimirlo.
+    - Seleccionar los archivos `MesloLGMNerdFont-Regular.ttf`, `-Bold.ttf`, `-Italic.ttf` y `-BoldItalic.ttf`, clic derecho > **Instalar** (queda instalada para el usuario actual; **Instalar para todos los usuarios** requiere administrador).
 
 2. Reiniciar la terminal y seleccionar **MesloLGM Nerd Font** en:
     - Configuración > Valores predeterminados > Apariencia > Tipo de fuente
@@ -136,7 +101,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Para ver la política actual: `Get-ExecutionPolicy -List`
 
-> Con **PowerShell 7** normalmente no es necesario: en Windows ya viene con `RemoteSigned` por defecto. Se necesita en **Windows PowerShell 5.1**, cuya política por defecto es `Restricted` (ver la sección siguiente). Si la política la fija una directiva de grupo (por ejemplo, en un equipo de trabajo), este comando no podrá cambiarla; en ese caso usar la opción `--eval` descrita en [Seleccionar tema Oh-My-Posh](#seleccionar-tema-oh-my-posh).
+> Con **PowerShell 7** normalmente no es necesario: en Windows ya viene con `RemoteSigned` por defecto. Se necesita en **Windows PowerShell 5.1**, cuya política por defecto es `Restricted` (ver la sección siguiente). Si la política la fija una directiva de grupo (por ejemplo, en un equipo de trabajo), este comando no podrá cambiarla y el perfil no se cargará.
 
 El perfil completo de referencia está en [`profile.txt`](profile.txt).
 
@@ -162,92 +127,45 @@ Windows incluye **Windows PowerShell 5.1** (`powershell.exe`, pestaña "Windows 
     ```
 
 - **Codificación del perfil**: 5.1 lee los archivos UTF-8 sin BOM (lo que guarda Notepad por defecto) como ANSI, así que tildes o `ñ` en comentarios del perfil se verán mal. Evitarlas o guardar el archivo como "UTF-8 con BOM".
-- **Oh My Posh, zoxide y eza** funcionan igual en 5.1 con las mismas líneas de esta guía.
+- **Starship, zoxide y eza** funcionan igual en 5.1 con las mismas líneas de esta guía.
 
-## Seleccionar tema Oh-My-Posh
+## Configurar Starship
 
-1. Buscamos el tema en https://ohmyposh.dev/docs/themes
-2. Agregamos la línea en `$PROFILE`, usando el nombre del tema (se descarga automáticamente y queda en caché):
+1. Agregar en `$PROFILE`:
 
 ```powershell
-oh-my-posh init pwsh --config 'pure' | Invoke-Expression
+Invoke-Expression (&starship init powershell)
 ```
 
 > Esta línea debe ir al final del perfil, solo antes de la de zoxide.
 
-3. Guardamos y recargamos con `. $PROFILE`
-
-`--config` también acepta una URL remota o la ruta a un archivo local. Para personalizar el tema o usarlo sin conexión, lo exportamos a un archivo local:
+2. Copiar la configuración de Linux desde [wh01s17/dotfiles](https://github.com/wh01s17/dotfiles/blob/main/terminal/.config/starship.toml). En Windows, Starship la busca en `~\.config\starship.toml` (o en la ruta de `$env:STARSHIP_CONFIG`, si está definida):
 
 ```powershell
-oh-my-posh config export --config 'pure' --output "$HOME\pure.omp.json"
+New-Item -ItemType Directory -Path "$HOME\.config" -Force | Out-Null
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/wh01s17/dotfiles/main/terminal/.config/starship.toml' -OutFile "$HOME\.config\starship.toml"
 ```
 
-Y en `$PROFILE` apuntamos a ese archivo:
+Para tomar los cambios del repositorio, volver a ejecutar el comando (o el script, que muestra si la copia local es distinta antes de reemplazarla).
+
+3. Línea en blanco entre comandos: `starship.toml` usa `add_newline = false` porque en zsh esa línea la agrega un hook `precmd`, así el primer prompt queda pegado al borde superior. Para lo mismo en PowerShell, agregar antes de `starship init` (Starship ejecuta `Invoke-Starship-PreCommand` antes de cada prompt; el historial solo cambia si se ejecutó un comando, así que un Enter sin escribir nada no deja línea en blanco):
 
 ```powershell
-oh-my-posh init pwsh --config "$HOME\pure.omp.json" | Invoke-Expression
-```
-
-> Según el instalador, `POSH_THEMES_PATH` puede no existir: la versión MSIX no incluye los temas en local ni define esa variable. Por eso conviene usar el nombre del tema en lugar de `$env:POSH_THEMES_PATH`, que funciona con cualquier instalación.
-
-Si la política de ejecución sigue bloqueando scripts sin firmar (por ejemplo, porque no se puede cambiar con `Set-ExecutionPolicy`, ver [Crear el perfil de PowerShell](#crear-el-perfil-de-powershell)), usar `--eval` (inicia algo más lento):
-
-```powershell
-oh-my-posh init pwsh --config 'pure' --eval | Invoke-Expression
-```
-
-## Mostrar el venv de Python y la versión de Node.js en cualquier tema
-
-En lugar de editar el tema, se crea un tema propio que lo **extiende** (`extends`) y solo agrega los segmentos. Así se puede cambiar de tema modificando una sola línea y sin perder los agregados.
-
-1. Crear `$HOME\mi-tema.omp.json`:
-
-```json
-{
-  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "version": 4,
-  "extends": "pure",
-  "blocks": [
-    {
-      "type": "prompt",
-      "alignment": "left",
-      "segments": [
-        {
-          "type": "python",
-          "style": "plain",
-          "foreground": "#EBCB8B",
-          "template": "  {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{ end }} ",
-          "options": { "display_mode": "context", "fetch_virtual_env": true }
-        },
-        {
-          "type": "node",
-          "style": "plain",
-          "foreground": "#8CC265",
-          "template": "  {{ .Full }} ",
-          "options": { "display_mode": "files" }
-        }
-      ]
-    }
-  ]
+function Invoke-Starship-PreCommand {
+    $id = Get-History -Count 1 | ForEach-Object { $_.Id }
+    if ($id -and $id -ne $global:StarshipLastHistoryId) { Write-Host }
+    $global:StarshipLastHistoryId = $id
 }
 ```
 
-2. En `$PROFILE`, apuntar Oh My Posh a ese archivo:
+4. Guardar y recargar con `. $PROFILE`
 
-```powershell
-oh-my-posh init pwsh --config "$HOME\mi-tema.omp.json" | Invoke-Expression
-```
+Qué tener en cuenta:
 
-3. Para cambiar de tema, cambiar solo el valor de `"extends"` (nombre del tema, URL o ruta a un archivo local).
-
-Cómo funciona y qué tener en cuenta:
-
-- Los segmentos se combinan con el **primer bloque izquierdo** del tema base. Si el tema ya tenía un segmento `python` o `node` en ese bloque, se reemplaza por el de aquí (no se duplica).
-- **Python**: con `display_mode: context` aparece en carpetas con archivos de Python o cuando hay un venv activo; con `environment` aparece solo con un venv activo. `fetch_virtual_env: true` es necesario porque algunos temas ocultan el nombre del venv.
-- **Node.js**: con `display_mode: files` aparece solo en proyectos JavaScript (`package.json`, `.nvmrc`, `node_modules`, etc.). Muestra la versión de `node` activa en el `PATH`, así que respeta la versión elegida con **nvm** (`nvm use`).
-- Si el tema muestra Python o Node.js en **otro** bloque (por ejemplo, `atomic` en el lado derecho), aparecerán dos veces.
-- Requiere Oh My Posh 28 o superior para la clave `options`; en versiones anteriores hay que usar `properties` (ver [Actualizar Oh My Posh](#actualizar-oh-my-posh)).
+- El venv de Python y la versión de Node.js aparecen solos (módulos `python` y `nodejs`), solo en carpetas con archivos de esos lenguajes o con un venv activo. `node` es el activo en el `PATH`, así que respeta la versión elegida con **nvm**.
+- El módulo `sudo` no aparece en Windows (Starship lo desactiva ahí salvo con `allow_windows = true`).
+- `starship explain` describe los segmentos del prompt actual y `starship timings` muestra cuánto tarda cada uno; en repositorios grandes `git_status` y `git_metrics` son los más lentos.
+- Para probar otro estilo sin perder la configuración: `starship preset --list` y, por ejemplo, `starship preset tokyo-night -o "$HOME\.config\starship-tokyo.toml"`, y luego `$env:STARSHIP_CONFIG = "$HOME\.config\starship-tokyo.toml"` en la sesión.
 
 ## Ver listado con historial de comandos que coincida con el input
 
@@ -279,7 +197,7 @@ Agregar esta línea en `$PROFILE` (reemplaza `cd` por zoxide y agrega `cdi` para
 Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
 ```
 
-> Esta línea debe ser la **última** del perfil, después de la de Oh My Posh. zoxide registra los directorios visitados envolviendo la función `prompt`; si Oh My Posh se inicializa después, la reemplaza y zoxide deja de aprender rutas (y muestra el aviso *detected a possible configuration issue*).
+> Esta línea debe ser la **última** del perfil, después de la de Starship. zoxide registra los directorios visitados envolviendo la función `prompt`; si Starship se inicializa después, la reemplaza y zoxide deja de aprender rutas (y muestra el aviso *detected a possible configuration issue*).
 
 ## Instalar y configurar eza
 

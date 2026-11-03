@@ -4,16 +4,18 @@
     Post-instalacion de Windows Terminal + PowerShell (ver personalizar-terminal.md).
 
 .DESCRIPTION
-    - Instala Windows Terminal, PowerShell 7, Oh My Posh, zoxide y eza con winget y ofrece actualizarlos
+    - Instala Windows Terminal, PowerShell 7, Starship, zoxide y eza con winget y ofrece actualizarlos
     - Habilita la ejecucion de scripts (RemoteSigned) para el usuario si esta bloqueada
     - Instala una Nerd Font (Meslo) si no hay ninguna
     - Configura Windows Terminal: Snazzy, fuente, opacidad, acrilico y perfil predeterminado
+    - Copia la configuracion de Starship de wh01s17/dotfiles (la misma que en Linux)
     - Crea o actualiza $PROFILE de PowerShell 7 y Windows PowerShell 5.1:
         * La configuracion gestionada va en un bloque marcado al final del perfil, con
-          Oh My Posh y luego zoxide al final (zoxide envuelve el prompt de Oh My Posh);
+          Starship y luego zoxide al final (zoxide envuelve el prompt de Starship);
           volver a ejecutar el script no duplica nada
-        * Las lineas propias se conservan y lo que ya configuran (oh-my-posh, zoxide, ls, ...)
+        * Las lineas propias se conservan y lo que ya configuran (starship, zoxide, ls, ...)
           no se agrega al bloque
+        * Si el perfil usa Oh My Posh, ofrece reemplazarlo por Starship y desinstalarlo
 
     Solo se pregunta por lo que falta; cada archivo se respalda antes de modificarlo.
 
@@ -23,8 +25,8 @@
 .PARAMETER DryRun
     Mostrar lo que se haria sin instalar ni modificar nada.
 
-.PARAMETER Theme
-    Tema de Oh My Posh propuesto cuando el perfil aun no tiene uno (por defecto: pure).
+.PARAMETER StarshipConfig
+    URL o ruta del starship.toml que se copia (por defecto: el de wh01s17/dotfiles).
 
 .PARAMETER SkipInstall
     No instalar ni actualizar programas con winget.
@@ -39,7 +41,7 @@
 param(
     [switch]$Yes,
     [switch]$DryRun,
-    [string]$Theme = 'pure',
+    [string]$StarshipConfig = 'https://raw.githubusercontent.com/wh01s17/dotfiles/main/terminal/.config/starship.toml',
     [switch]$SkipInstall
 )
 
@@ -62,14 +64,21 @@ $EzaShortcuts = [ordered]@{
     ll = 'eza --icons -l @args'
     lla = 'eza --icons -la @args'
 }
-$ThemesZipUrl = 'https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/themes.zip'
-$ThemePageSize = 6
-$PoshSchemaUrl = 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json'
-$PoshReleasesApi = 'https://api.github.com/repos/JanDeDobbeleer/oh-my-posh/releases/latest'
+# Archivos de Meslo de una version fija de Nerd Fonts (el zip de la version completa pesa mas de 100 MB).
+$MesloUrl = 'https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v3.5.1/patched-fonts/Meslo/M/MesloLGMNerdFont-{0}.ttf'
+$MesloStyles = [ordered]@{ Regular = 'Regular'; Bold = 'Bold'; Italic = 'Italic'; BoldItalic = 'Bold Italic' }
+$StarshipInitLine = 'Invoke-Expression (&starship init powershell)'
+# starship.toml usa add_newline = false y en zsh la linea en blanco entre comandos la pone un hook
+# precmd. Aqui se hace igual: el historial solo cambia si se ejecuto un comando, asi que no hay
+# linea en blanco antes del primer prompt ni al presionar Enter sin escribir nada.
+$StarshipPreCommand = @(
+    'function Invoke-Starship-PreCommand {'
+    '    $id = Get-History -Count 1 | ForEach-Object { $_.Id }'
+    '    if ($id -and $id -ne $global:StarshipLastHistoryId) { Write-Host }'
+    '    $global:StarshipLastHistoryId = $id'
+    '}'
+)
 $PoshWingetId = 'JanDeDobbeleer.OhMyPosh'
-# Tema propio que extiende el elegido para agregar el venv de Python y Node.js (funciona con cualquier tema).
-$PoshOverlayFile = Join-Path $HOME 'mi-tema.omp.json'
-$PoshOverlayConfig = '$HOME\mi-tema.omp.json'
 # Codigos de salida de winget
 $WingetNoUpdate = -1978335189            # no hay actualizaciones disponibles
 $WingetTechnologyMismatch = -1978335090  # la version nueva usa otra tecnologia de instalacion
@@ -82,7 +91,7 @@ $GallerySetup51 = '[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePoi
 $Tools = @(
     @{ Name = 'Windows Terminal'; Id = 'Microsoft.WindowsTerminal'; Command = 'wt' }
     @{ Name = 'PowerShell 7'; Id = 'Microsoft.PowerShell'; Command = 'pwsh' }
-    @{ Name = 'Oh My Posh'; Id = $PoshWingetId; Command = 'oh-my-posh' }
+    @{ Name = 'Starship'; Id = 'Starship.Starship'; Command = 'starship' }
     @{ Name = 'zoxide'; Id = 'ajeetdsouza.zoxide'; Command = 'zoxide' }
     @{ Name = 'eza'; Id = 'eza-community.eza'; Command = 'eza' }
 )
@@ -94,14 +103,11 @@ $TerminalSettingsPaths = @(
 )
 
 $script:Interactive = $true
-$script:Ansi = $false
 $script:Stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $script:Summary = New-Object System.Collections.Generic.List[string]
 $script:FontFamilies = $null
-$script:PoshVersion = $null
-$script:PoshChoice = $null
-$script:ThemeFiles = $null
-$script:ThemeDir = $null
+# Algun perfil sigue cargando Oh My Posh despues de actualizar los perfiles.
+$script:PoshInUse = $false
 
 # --- Salida y preguntas ------------------------------------------------------
 
@@ -292,49 +298,11 @@ function Install-Tools {
     }
     Update-SessionPath
 
-    foreach ($tool in @($installed | Where-Object { $_.Id -eq $PoshWingetId })) { Update-OhMyPosh $tool }
-    $others = @($installed | Where-Object { $_.Id -ne $PoshWingetId })
-    if ($others.Count -and (Confirm-Choice 'Buscar actualizaciones de los demas programas instalados?' $false)) {
-        foreach ($tool in $others) {
+    if ($installed.Count -and (Confirm-Choice 'Buscar actualizaciones de los programas instalados?' $false)) {
+        foreach ($tool in $installed) {
             Invoke-Change "Actualizar $($tool.Name) ($($tool.Id))" { Invoke-Winget 'upgrade' $tool }
         }
         Update-SessionPath
-    }
-}
-
-function Get-PoshVersion {
-    if ($null -eq $script:PoshVersion) {
-        $version = [version]'0.0'
-        if (Test-Tool 'oh-my-posh') {
-            [void][version]::TryParse("$(Get-NativeOutput 'oh-my-posh' @('version') | Select-Object -First 1)".Trim(), [ref]$version)
-        }
-        $script:PoshVersion = $version
-    }
-    $script:PoshVersion
-}
-
-# Un Oh My Posh desactualizado ignora sin avisar opciones de los temas actuales
-# (por ejemplo, la clave 'options' de los segmentos antes de la version 28).
-function Update-OhMyPosh($Tool) {
-    $installed = Get-PoshVersion
-    if ($installed.Major -eq 0) { return }
-    try {
-        $latest = [version](("$((Invoke-RestMethod -Uri $PoshReleasesApi -UseBasicParsing).tag_name)").TrimStart('v'))
-    } catch {
-        Write-Warn "No se pudo consultar la ultima version de Oh My Posh: $($_.Exception.Message)"
-        return
-    }
-    if ($installed -ge $latest) {
-        Write-Info "Oh My Posh $installed esta al dia."
-        return
-    }
-    if ($installed.Major -lt $latest.Major) {
-        Write-Warn "Oh My Posh $installed esta desactualizado (ultima: $latest); los temas actuales pueden no verse como se espera."
-    }
-    if (Confirm-Choice "Actualizar Oh My Posh $installed -> $($latest)?" $true) {
-        Invoke-Change "Actualizar Oh My Posh $installed -> $latest" { Invoke-Winget 'upgrade' $Tool }
-        Update-SessionPath
-        $script:PoshVersion = $null
     }
 }
 
@@ -345,7 +313,7 @@ function Switch-ToPwsh {
     if (-not $pwsh) { return }
 
     Write-Step 'Continuando en PowerShell 7'
-    $arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $PSCommandPath, '-SkipInstall', '-Theme', $Theme)
+    $arguments = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $PSCommandPath, '-SkipInstall', '-StarshipConfig', $StarshipConfig)
     if ($Yes) { $arguments += '-Yes' }
     if ($DryRun) { $arguments += '-DryRun' }
     if ($script:Summary.Count) {
@@ -426,20 +394,38 @@ function Get-NerdFontFamily {
     $families | Select-Object -First 1
 }
 
+# Instala la fuente solo para el usuario actual, sin permisos de administrador (igual que
+# "Instalar" en el explorador): archivo en la carpeta de fuentes del usuario y entrada en HKCU.
+function Install-MesloFont {
+    $fontDir = Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Fonts'
+    $registry = 'HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts'
+    if (-not (Test-Path -LiteralPath $fontDir)) { New-Item -ItemType Directory -Path $fontDir -Force | Out-Null }
+    if (-not (Test-Path -LiteralPath $registry)) { New-Item -Path $registry -Force | Out-Null }
+    # AddFontResource la deja disponible sin cerrar sesion.
+    Add-Type -Namespace PostInstall -Name Gdi -MemberDefinition '[DllImport("gdi32.dll", CharSet = CharSet.Unicode)] public static extern int AddFontResource(string file);'
+    foreach ($style in $MesloStyles.Keys) {
+        $path = Join-Path $fontDir "MesloLGMNerdFont-$style.ttf"
+        Invoke-WebRequest -Uri ($MesloUrl -f $style) -OutFile $path -UseBasicParsing
+        Set-ItemProperty -LiteralPath $registry -Name "$MesloFace $($MesloStyles[$style]) (TrueType)" -Value $path
+        [void][PostInstall.Gdi]::AddFontResource($path)
+    }
+}
+
 function Install-NerdFont {
     Write-Step 'Fuente'
     $nerd = Get-NerdFontFamily
     if ($nerd) {
         Write-Info "Nerd Font instalada: $nerd"
-    } elseif (-not (Test-Tool 'oh-my-posh')) {
-        Write-Warn 'No hay ninguna Nerd Font y Oh My Posh no esta instalado para instalarla.'
     } elseif (Confirm-Choice 'No hay ninguna Nerd Font instalada. Instalar Meslo (recomendada)?' $true) {
-        Invoke-Change 'Instalar fuente Meslo (oh-my-posh font install meslo)' {
-            $code = Invoke-Native 'oh-my-posh' @('font', 'install', 'meslo')
-            if ($code -ne 0) { Write-Warn "oh-my-posh termino con codigo $code al instalar la fuente." }
+        Invoke-Change "Instalar fuente $MesloFace para el usuario actual" {
+            try {
+                Install-MesloFont
+                # InstalledFontCollection no ve la fuente nueva en este proceso.
+                $script:FontFamilies = @(Get-InstalledFontFamilies) + $MesloFace
+            } catch {
+                Write-Warn "No se pudo instalar la fuente: $($_.Exception.Message)"
+            }
         }
-        # InstalledFontCollection no ve la fuente nueva en este proceso.
-        $script:FontFamilies = @(Get-InstalledFontFamilies) + $MesloFace
     }
 }
 
@@ -559,301 +545,54 @@ function Update-TerminalSettings {
     }
 }
 
-# --- Oh My Posh --------------------------------------------------------------
+# --- Starship ---------------------------------------------------------------
 
-# Ruta local de un --config ('$HOME\tema.omp.json' o ruta absoluta); $null si es un nombre de tema o una URL.
-function Resolve-PoshConfigPath([string]$Config) {
-    if ($Config -notmatch '\.omp\.(json|ya?ml|toml)$' -or $Config -match '^https?://') { return $null }
-    if ($Config.StartsWith('$HOME', [StringComparison]::OrdinalIgnoreCase)) { return $HOME + $Config.Substring(5) }
-    $Config
+function Get-StarshipConfigPath {
+    if ($env:STARSHIP_CONFIG) { return $env:STARSHIP_CONFIG }
+    Join-Path $HOME '.config\starship.toml'
 }
 
-function Format-PoshConfig([string]$Config) {
-    if ($Config -match '\$') { return '"' + $Config + '"' }
-    "'" + $Config + "'"
-}
-
-# Temas disponibles (nombre -> archivo local) para mostrar ejemplos. Descarga themes.zip de la
-# ultima version; sin internet usa los temas que traen algunos instaladores (POSH_THEMES_PATH).
-function Get-PoshThemeGallery {
-    if ($null -ne $script:ThemeFiles) { return $script:ThemeFiles }
-    $script:ThemeFiles = @{}
-    $dir = Join-Path ([IO.Path]::GetTempPath()) "omp-themes-$PID"
-    $zip = "$dir.zip"
-    $source = $null
+# Texto del starship.toml de origen (URL o archivo local); $null si no se pudo leer.
+function Read-StarshipSource {
     try {
-        Write-Info 'Descargando los temas de Oh My Posh...'
-        Invoke-WebRequest -Uri $ThemesZipUrl -OutFile $zip -UseBasicParsing
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [IO.Compression.ZipFile]::ExtractToDirectory($zip, $dir)
-        $script:ThemeDir = $dir
-        $source = $dir
+        if ($StarshipConfig -notmatch '^https?://') { return Read-TextFile $StarshipConfig }
+        $temp = [IO.Path]::GetTempFileName()
+        try {
+            Invoke-WebRequest -Uri $StarshipConfig -OutFile $temp -UseBasicParsing
+            Read-TextFile $temp
+        } finally {
+            Remove-Item -LiteralPath $temp -Force -ErrorAction SilentlyContinue
+        }
     } catch {
-        Write-Warn "No se pudieron descargar los temas: $($_.Exception.Message)"
-        if ($env:POSH_THEMES_PATH -and (Test-Path -LiteralPath $env:POSH_THEMES_PATH)) {
-            $source = $env:POSH_THEMES_PATH
-            Write-Info "Se usan los temas locales de $source"
-        }
-    } finally {
-        Remove-Item -LiteralPath $zip -Force -ErrorAction SilentlyContinue
-    }
-    if ($source) {
-        foreach ($file in Get-ChildItem -LiteralPath $source -File | Where-Object { $_.Name -match '\.omp\.(json|ya?ml|toml)$' }) {
-            $script:ThemeFiles[($file.Name -replace '\.omp\.(json|ya?ml|toml)$', '')] = $file.FullName
-        }
-    }
-    $script:ThemeFiles
-}
-
-function Show-PoshThemePreview([string]$File) {
-    $width = 100
-    try { $width = [Math]::Max(40, $Host.UI.RawUI.WindowSize.Width - 8) } catch { }
-    $arguments = @('print', 'primary', '--config', $File, '--shell', 'pwsh', '--pwd', $HOME, '--terminal-width', "$width")
-    if (-not $script:Ansi) { $arguments += '--plain' }
-
-    # oh-my-posh escribe UTF-8; sin esto los iconos de la Nerd Font se leen mal.
-    $encoding = $null
-    try {
-        $encoding = [Console]::OutputEncoding
-        [Console]::OutputEncoding = [Text.Encoding]::UTF8
-    } catch { }
-    $output = Get-NativeOutput 'oh-my-posh' $arguments
-    if ($encoding) { try { [Console]::OutputEncoding = $encoding } catch { } }
-
-    $esc = [char]27
-    foreach ($line in $output) {
-        # Se quitan las secuencias OSC (titulo de la ventana, etc.) para no alterar la terminal, y las
-        # de guardar/restaurar cursor: el prompt derecho ya viene alineado con espacios.
-        $clean = "$line" -replace "$esc\][^\a$esc]*(?:\a|$esc\\)", '' -replace "$esc[78]", ''
-        Write-Host "        $clean$esc[0m"
+        Write-Warn "No se pudo leer ${StarshipConfig}: $($_.Exception.Message)"
     }
 }
 
-# Galeria paginada con un ejemplo del prompt de cada tema. Devuelve $null si no hay galeria.
-function Select-PoshTheme([string]$Default) {
-    $files = Get-PoshThemeGallery
-    if (-not $files.Count) { return $null }
-    $all = @($files.Keys | Sort-Object)
-    $list = $all
-    $filter = ''
-    $page = 0
-
-    while ($true) {
-        $pages = [Math]::Max(1, [int][Math]::Ceiling($list.Count / $ThemePageSize))
-        if ($page -ge $pages) { $page = 0 }
-        if ($page -lt 0) { $page = $pages - 1 }
-        $label = if ($filter) { ", busqueda '$filter'" } else { '' }
-        $count = if ($list.Count -eq 1) { '1 tema' } else { "$($list.Count) temas" }
-        Write-Host ''
-        Write-Info "Temas de Oh My Posh - pagina $($page + 1)/$pages ($count$label)"
-
-        $first = $page * $ThemePageSize
-        $last = [Math]::Min($list.Count, $first + $ThemePageSize) - 1
-        for ($i = $first; $i -le $last; $i++) {
-            Write-Host ''
-            Write-Host ('    {0,3}) {1}' -f ($i + 1), $list[$i]) -ForegroundColor Cyan
-            Show-PoshThemePreview $files[$list[$i]]
-        }
-
-        Write-Host ''
-        Write-Info "[numero] elegir  [Enter] siguiente  [a] anterior  [texto] buscar  [*] ver todos  [q] usar '$Default'"
-        $answer = (Read-Host '    Tema').Trim()
-        if (-not $answer) { $page++; continue }
-        if ($answer -eq 'a') { $page--; continue }
-        if ($answer -eq 'q') { return $Default }
-        if ($answer -eq '*') {
-            $list = $all
-            $filter = ''
-            $page = 0
-            continue
-        }
-        $number = 0
-        if ([int]::TryParse($answer, [ref]$number)) {
-            if ($number -ge 1 -and $number -le $list.Count) { return $list[$number - 1] }
-            Write-Warn "Numero fuera de rango (1-$($list.Count))."
-            continue
-        }
-        $exact = @($all | Where-Object { $_ -eq $answer })
-        if ($exact.Count) { return $exact[0] }
-        $found = @($all | Where-Object { $_ -like "*$answer*" })
-        if ($found.Count) {
-            $list = $found
-            $filter = $answer
-            $page = 0
-        } else {
-            Write-Warn "Ningun tema contiene '$answer'."
-        }
-    }
-}
-
-function Export-PoshTheme([string]$Name, [string]$Path) {
-    $code = Invoke-Native 'oh-my-posh' @('config', 'export', '--config', $Name, '--output', $Path)
-    if ($code -ne 0) { Write-Warn "No se pudo exportar el tema '$Name'." }
-}
-
-# Muestra la galeria (o pide el nombre si no hay) y guarda la eleccion para el otro perfil.
-function Get-PoshThemeChoice([string]$Default) {
-    if (-not $Default) { $Default = $Theme }
-    $name = if (-not (Test-Automatic)) { Select-PoshTheme $Default }
-    # 'config export' devuelve el tema por defecto sin error si el nombre no existe,
-    # asi que se valida contra la galeria (si no se pudo descargar, se acepta el nombre).
-    while ($true) {
-        if (-not $name) { $name = Read-Value 'Tema de Oh My Posh (https://ohmyposh.dev/docs/themes)' $Default }
-        $files = Get-PoshThemeGallery
-        if (-not $files.Count -or $name -match '^https?://' -or (Resolve-PoshConfigPath $name)) { break }
-        $exact = @($files.Keys | Where-Object { $_ -eq $name })
-        if ($exact.Count) {
-            $name = $exact[0]
-            break
-        }
-        Write-Warn "No se encontro el tema '$name'."
-        if (Test-Automatic) { return $null }
-        $name = $null
-    }
-    Write-Info "Tema elegido: $name"
-    $config = $name
-    if (Confirm-Choice 'Exportar el tema a un archivo local? (inicia mas rapido y funciona sin internet)' $false) {
-        $target = Join-Path $HOME "$name.omp.json"
-        Invoke-Change "Exportar tema '$name' a $target" { Export-PoshTheme $name $target }
-        $config = "`$HOME\$name.omp.json"
-    }
-    $script:PoshChoice = $config
-    $config
-}
-
-# --- Segmentos extra en el prompt (venv de Python, Node.js) ------------------
-
-# Oh My Posh 28 renombro 'properties' a 'options' en los segmentos; las versiones
-# anteriores ignoran 'options' sin mostrar error.
-function New-PoshSegment([string]$Type, [string]$Foreground, [string]$Template, [hashtable]$Options) {
-    $segment = [pscustomobject]@{ type = $Type; style = 'plain'; foreground = $Foreground; template = $Template }
-    Set-Prop $segment $(if ((Get-PoshVersion).Major -ge 28) { 'options' } else { 'properties' }) ([pscustomobject]$Options)
-    $segment
-}
-
-# Segmentos que se pueden agregar a cualquier tema. 'Pattern' indica cuando el tema ya lo muestra.
-function Get-ExtraSegments {
-    [pscustomobject]@{
-        Type = 'python'; Label = 'Venv de Python'; Pattern = '\.Venv'
-        Prompt = 'Mostrar el entorno virtual de Python (venv) en el prompt?'
-        # Algunos temas ocultan el venv (fetch_virtual_env) o solo muestran python con archivos .py.
-        New = { New-PoshSegment 'python' '#EBCB8B' " $([char]0xE235) {{ .Full }}{{ if .Venv }} ({{ .Venv }}){{ end }} " @{ display_mode = 'context'; fetch_virtual_env = $true } }
-    }
-    [pscustomobject]@{
-        Type = 'node'; Label = 'Version de Node.js'; Pattern = ''
-        Prompt = 'Mostrar la version de Node.js en proyectos JavaScript (package.json, .nvmrc, ...)?'
-        # Usa el node activo en el PATH, asi que respeta la version elegida con nvm.
-        New = { New-PoshSegment 'node' '#8CC265' " $([char]0xE718) {{ .Full }} " @{ display_mode = 'files' } }
-    }
-}
-
-# Lee un tema JSON local referenciado por --config; $null si es un nombre, una URL o no existe.
-function Read-PoshConfigFile([string]$Config) {
-    $path = Resolve-PoshConfigPath $Config
-    if (-not $path -or $path -notmatch '\.json$' -or -not (Test-Path -LiteralPath $path)) { return $null }
-    try { $json = Read-TextFile $path | ConvertFrom-Json } catch { return $null }
-    [pscustomobject]@{ Path = $path; Json = $json }
-}
-
-function Write-PoshConfigFile([string]$Path, $Json) {
-    Backup-File $Path
-    Write-TextFile $Path ($Json | ConvertTo-Json -Depth 32) $false
-}
-
-function Test-ShowsSegment($Json, [string]$Type, [string]$Pattern) {
-    foreach ($block in @(Get-Prop $Json 'blocks')) {
-        foreach ($segment in @(Get-Prop $block 'segments')) {
-            if ((Get-Prop $segment 'type') -eq $Type -and "$(Get-Prop $segment 'template')" -match $Pattern) { return $true }
-        }
-    }
-    $false
-}
-
-# Con 'extends', Oh My Posh combina este bloque con el primer bloque izquierdo del tema base.
-function Add-PoshSegment($Json, $Segment) {
-    $blocks = @(@(Get-Prop $Json 'blocks') | Where-Object { $null -ne $_ })
-    $block = $blocks | Where-Object { (Get-Prop $_ 'type') -eq 'prompt' -and (Get-Prop $_ 'alignment') -eq 'left' } | Select-Object -First 1
-    if (-not $block) {
-        $block = [pscustomobject]@{ type = 'prompt'; alignment = 'left'; segments = @() }
-        Set-Prop $Json 'blocks' ($blocks + $block)
-    }
-    Set-Prop $block 'segments' (@(@(Get-Prop $block 'segments') | Where-Object { $null -ne $_ }) + $Segment)
-}
-
-# Valor de 'extends' para un --config: nombre de tema, URL o ruta absoluta.
-function ConvertTo-ExtendsValue([string]$Config) {
-    $path = Resolve-PoshConfigPath $Config
-    if ($path) { $path } else { $Config }
-}
-
-# Agrega los segmentos elegidos a un tema propio que extiende el del perfil ($PoshOverlayFile).
-# Si el perfil ya usa un tema con 'extends', se agregan ahi mismo.
-function Update-PoshSegments($State) {
-    if (-not $State.PoshConfig) {
-        Write-Info 'El perfil usa el tema por defecto de Oh My Posh; elige un tema para agregar venv o Node.js.'
+# Copia la misma configuracion que se usa en Linux; si la local es distinta, pregunta antes de reemplazarla.
+function Update-StarshipConfig {
+    Write-Step 'Configuracion de Starship'
+    if (-not (Test-Tool 'starship')) {
+        Write-Warn 'Starship no esta instalado; se omite su configuracion.'
         return
     }
-    $file = Read-PoshConfigFile $State.PoshConfig
-    if ($file -and -not (Get-Prop $file.Json 'extends')) { $file = $null }
+    $target = Get-StarshipConfigPath
+    Write-Info "Origen: $StarshipConfig"
+    Write-Info "Destino: $target"
+    $source = Read-StarshipSource
+    if ($null -eq $source) { return }
 
-    $wanted = @()
-    foreach ($extra in Get-ExtraSegments) {
-        if ($file -and (Test-ShowsSegment $file.Json $extra.Type $extra.Pattern)) {
-            Write-Info "$($extra.Label): el tema ya lo muestra"
-        } elseif (($extra.Type -ne 'node' -or (Test-Tool 'node')) -and (Confirm-Choice $extra.Prompt $false)) {
-            $wanted += $extra
-        }
-    }
-    if (-not $wanted.Count) { return }
-
-    if (-not $file) {
-        $file = Read-PoshConfigFile $PoshOverlayConfig
-        if (Test-Path -LiteralPath $PoshOverlayFile) {
-            if (-not ($file -and (Get-Prop $file.Json 'extends'))) {
-                Write-Warn "$PoshOverlayFile ya existe y no extiende un tema; no se modifica."
-                return
-            }
-        } else {
-            $file = [pscustomobject]@{ Path = $PoshOverlayFile; Json = [pscustomobject]@{ '$schema' = $PoshSchemaUrl; version = 4 } }
-        }
-        Set-Prop $file.Json 'extends' (ConvertTo-ExtendsValue $State.PoshConfig)
-        $State.PoshConfig = $PoshOverlayConfig
-        $script:PoshChoice = $PoshOverlayConfig
-    }
-    foreach ($extra in $wanted) {
-        if (-not (Test-ShowsSegment $file.Json $extra.Type $extra.Pattern)) { Add-PoshSegment $file.Json (& $extra.New) }
-    }
-    Invoke-Change "Agregar $(($wanted | ForEach-Object { $_.Label }) -join ', ') a $($file.Path) (tema '$(Get-Prop $file.Json 'extends')')" {
-        Write-PoshConfigFile $file.Path $file.Json
-    }
-}
-
-# El tema actual se mantiene salvo que el usuario quiera cambiarlo. Si el perfil usa un
-# tema propio con 'extends', se cambia el tema base dentro de ese archivo.
-function Update-PoshTheme($State) {
-    $file = Read-PoshConfigFile $State.PoshConfig
-    $extends = Get-Prop $(if ($file) { $file.Json }) 'extends'
-    if ($script:PoshChoice) {
-        if ($State.PoshConfig -ne $script:PoshChoice -and
-            (Confirm-Choice "Usar tambien el tema elegido ($script:PoshChoice) en lugar de '$($State.PoshConfig)'?" $true)) {
-            $State.PoshConfig = $script:PoshChoice
-        }
+    $exists = Test-Path -LiteralPath $target
+    if ($exists -and ((Read-TextFile $target) -replace '\r\n', "`n") -eq ($source -replace '\r\n', "`n")) {
+        Write-Info 'La configuracion ya es igual a la de origen.'
         return
     }
-    $current = if ($extends) { "$extends (en $($file.Path))" } elseif ($State.PoshConfig) { $State.PoshConfig } else { 'predeterminado' }
-    if (-not (Confirm-Choice "El perfil usa el tema '$current'. Elegir otro tema?" $false)) { return }
-
-    $reference = if ($extends) { $extends } else { $State.PoshConfig }
-    $default = if ($reference -and -not (Resolve-PoshConfigPath $reference) -and $reference -notmatch '^https?://') { $reference } else { $Theme }
-    $config = Get-PoshThemeChoice $default
-    if (-not $config) { return }
-    if ($extends) {
-        $base = ConvertTo-ExtendsValue $config
-        Set-Prop $file.Json 'extends' $base
-        Invoke-Change "Cambiar el tema base de $($file.Path) a '$base'" { Write-PoshConfigFile $file.Path $file.Json }
-        $script:PoshChoice = $State.PoshConfig
-    } else {
-        $State.PoshConfig = $config
+    $prompt = if ($exists) { 'La configuracion local es distinta de la de origen. Reemplazarla?' } else { 'Copiar la configuracion de Starship?' }
+    if (Confirm-Choice $prompt $true) {
+        # Sin BOM: es un archivo TOML.
+        Invoke-Change "Copiar la configuracion de Starship a $target" {
+            Backup-File $target
+            Write-TextFile $target $source $false
+        }
     }
 }
 
@@ -883,28 +622,39 @@ function Read-ProfileState([string]$Text) {
         ZoxideCd = $managed -match 'zoxide init powershell --cmd cd'
         Eza = $managed -match 'function ls \{ eza'
         TerminalIcons = $managed -match 'Terminal-Icons'
-        Posh = $false
-        PoshConfig = $null
+        Starship = $managed -match 'starship init'
+        # Linea de Oh My Posh que dejaron versiones anteriores del script; se mantiene hasta pasar a Starship.
+        PoshLine = $block | Where-Object { $_ -match '^\s*oh-my-posh init' } | Select-Object -First 1
         # Lo que ya configuran las lineas propias no se agrega al bloque.
         OwnListView = $own -match 'PredictionViewStyle'
         OwnMenuComplete = $own -match 'Set-PSReadLineKeyHandler\b.*\bTab\b'
         OwnZoxide = $own -match 'zoxide'
+        OwnStarship = $own -match 'starship init'
+        OwnPreCommand = $own -match 'Invoke-Starship-PreCommand'
         OwnPosh = $own -match 'oh-my-posh'
         OwnLs = ($own -match "$define(?:ls)\b") -or ($own -match 'Terminal-Icons')
         OwnCd = $own -match "$define(?:cd)\b"
         OwnShortcuts = @($EzaShortcuts.Keys | Where-Object { $own -match "$define$_\b" })
     }
-    if ($managed -match '(?m)^oh-my-posh init pwsh(?: --config (?:''([^'']*)''|"([^"]*)"))?') {
-        $state.Posh = $true
-        $state.PoshConfig = @($Matches[1], $Matches[2]) | Where-Object { $_ } | Select-Object -First 1
-    }
     $state
+}
+
+function Test-UsesPosh([string]$Text) {
+    [bool]@($Text -split '\r?\n' | Where-Object { $_ -match 'oh-my-posh' -and $_ -notmatch '^\s*#' }).Count
+}
+
+# Comenta las lineas propias que cargan Oh My Posh (es lo unico que el script cambia fuera del bloque).
+function Disable-OwnPosh($State) {
+    for ($i = 0; $i -lt $State.UserLines.Count; $i++) {
+        if (Test-UsesPosh $State.UserLines[$i]) { $State.UserLines[$i] = "# $($State.UserLines[$i])" }
+    }
+    $State.OwnPosh = $false
 }
 
 # Pregunta solo por lo que el perfil aun no tiene.
 function Complete-ProfileState($State) {
     $own = @(
-        if ($State.OwnPosh) { 'Oh My Posh' }
+        if ($State.OwnStarship) { 'Starship' }
         if ($State.OwnZoxide) { 'zoxide' }
         if ($State.OwnLs) { 'ls' }
         if ($State.OwnCd -and -not $State.OwnZoxide) { 'cd' }
@@ -940,34 +690,27 @@ function Complete-ProfileState($State) {
         $State.TerminalIcons = $choice -like 'Terminal-Icons*'
     }
 
-    if (-not (Test-Tool 'oh-my-posh')) {
-        if (-not ($State.Posh -or $State.OwnPosh)) { Write-Warn 'Oh My Posh no esta instalado; no se agrega al perfil.' }
-        return
+    if ($State.OwnStarship) { return }
+    $posh = $State.PoshLine -or $State.OwnPosh
+    if (-not $State.Starship) {
+        if (-not (Test-Tool 'starship')) {
+            Write-Warn $(if ($posh) { 'Starship no esta instalado; se mantiene Oh My Posh.' } else { 'Starship no esta instalado; no se agrega al perfil.' })
+            return
+        }
+        if (-not (Confirm-Choice $(if ($posh) { 'El perfil usa Oh My Posh. Reemplazarlo por Starship?' } else { 'Agregar Starship al perfil?' }) $true)) { return }
+        $State.Starship = $true
+        $State.PoshLine = $null
     }
-    if ($State.Posh) {
-        Update-PoshTheme $State
-    } elseif (-not $State.OwnPosh -and (Confirm-Choice 'Agregar Oh My Posh al perfil?' $true)) {
-        $config = if ($script:PoshChoice) { $script:PoshChoice } else { Get-PoshThemeChoice $Theme }
-        if ($config) {
-            $State.Posh = $true
-            $State.PoshConfig = $config
+    if ($State.OwnPosh) {
+        if (Confirm-Choice 'Las lineas propias del perfil cargan Oh My Posh. Comentarlas para usar solo Starship?' $true) {
+            Disable-OwnPosh $State
+        } else {
+            Write-Warn 'Oh My Posh se seguira cargando antes del bloque: Starship reemplaza su prompt, pero la terminal tardara mas en abrir.'
         }
     }
-    if (-not $State.Posh) { return }
     if ($State.OwnZoxide) {
-        Write-Warn 'zoxide se inicializa fuera del bloque, antes de Oh My Posh, y no registrara directorios. Borra esa linea para que el script lo agregue al final.'
+        Write-Warn 'zoxide se inicializa fuera del bloque, antes de Starship, y no registrara directorios. Borra esa linea para que el script lo agregue al final.'
     }
-
-    # Tema exportado que ya no existe.
-    $path = Resolve-PoshConfigPath $State.PoshConfig
-    if ($path -and $path -ne $PoshOverlayFile -and -not (Test-Path -LiteralPath $path)) {
-        $name = [IO.Path]::GetFileName($path) -replace '\.omp\.(json|ya?ml|toml)$', ''
-        Write-Warn "El tema local '$path' no existe."
-        if (Confirm-Choice "Exportar el tema '$name' a esa ruta?" $true) {
-            Invoke-Change "Exportar tema '$name' a $path" { Export-PoshTheme $name $path }
-        }
-    }
-    Update-PoshSegments $State
 }
 
 function New-ProfileBlock($State, [bool]$Legacy) {
@@ -981,12 +724,14 @@ function New-ProfileBlock($State, [bool]$Legacy) {
             if ($State.OwnShortcuts -notcontains $name) { "function $name { $($EzaShortcuts[$name]) }" }
         }
     }
-    if ($State.Posh) {
-        $config = if ($State.PoshConfig) { ' --config ' + (Format-PoshConfig $State.PoshConfig) } else { '' }
-        "oh-my-posh init pwsh$config | Invoke-Expression"
+    if ($State.Starship) {
+        if (-not $State.OwnPreCommand) { $StarshipPreCommand }
+        $StarshipInitLine
+    } elseif ($State.PoshLine) {
+        $State.PoshLine
     }
     # zoxide registra los directorios envolviendo la funcion prompt, asi que va despues de
-    # Oh My Posh: si no, Oh My Posh reemplaza el prompt y zoxide deja de aprender rutas.
+    # Starship: si no, Starship reemplaza el prompt y zoxide deja de aprender rutas.
     if ($State.Zoxide) { "Invoke-Expression (& { (zoxide init powershell$(if ($State.ZoxideCd) { ' --cmd cd' }) | Out-String) })" }
 }
 
@@ -1047,29 +792,58 @@ function Update-Profiles($Shells) {
         }
 
         $allHosts = Join-Path $shell.Dir 'profile.ps1'
-        if ((Test-Path -LiteralPath $allHosts) -and (Read-TextFile $allHosts) -match 'oh-my-posh') {
-            Write-Warn "$allHosts tambien inicializa Oh My Posh; revisalo para evitar duplicados."
+        if ((Test-Path -LiteralPath $allHosts) -and (Read-TextFile $allHosts) -match 'oh-my-posh|starship init') {
+            Write-Warn "$allHosts tambien inicializa el prompt; revisalo para evitar duplicados."
         }
 
         $state = Read-ProfileState $original
         Complete-ProfileState $state
         $block = @(New-ProfileBlock $state $shell.Legacy)
         $content = New-ProfileContent $state $block
+        $saved = $true
         if ($content -eq ($original -replace '\r?\n', "`r`n")) {
             Write-Info 'El perfil ya esta actualizado.'
         } else {
             Write-Info 'Bloque gestionado:'
             foreach ($line in $block) { Write-Host "      $line" -ForegroundColor DarkGray }
-            if (Confirm-Choice 'Guardar el perfil?' $true) {
+            $saved = Confirm-Choice 'Guardar el perfil?' $true
+            if ($saved) {
                 Invoke-Change "$(if ($exists) { 'Actualizar' } else { 'Crear' }) perfil de $($shell.Name)" {
                     Backup-File $profilePath
                     Write-TextFile $profilePath $content $true
                 }
             }
         }
+        if (Test-UsesPosh $(if ($saved) { $content } else { $original })) { $script:PoshInUse = $true }
 
         Update-ShellModules $shell $state
     }
+}
+
+# Ofrece desinstalar Oh My Posh cuando ya ningun perfil lo carga. Los temas guardados no se borran.
+function Remove-OhMyPosh($Shells) {
+    if (-not (Test-Tool 'oh-my-posh')) { return }
+    Write-Step 'Oh My Posh'
+    # Otros perfiles (todos los hosts, VS Code, ...) que este script no gestiona.
+    $others = @(foreach ($shell in $Shells) {
+        Get-ChildItem -LiteralPath $shell.Dir -Filter '*profile.ps1' -File -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -ne 'Microsoft.PowerShell_profile.ps1' -and (Test-UsesPosh (Read-TextFile $_.FullName)) } |
+            ForEach-Object { $_.FullName }
+    })
+    if ($script:PoshInUse -or $others.Count) {
+        Write-Info "Sigue en uso$(if ($others.Count) { " ($($others -join ', '))" }); no se desinstala."
+        return
+    }
+    if (-not (Test-Tool 'winget')) {
+        Write-Info 'Ya no se usa en los perfiles; se puede desinstalar desde Configuracion > Aplicaciones.'
+    } elseif (Confirm-Choice 'Oh My Posh ya no se usa en los perfiles. Desinstalarlo?' $false) {
+        Invoke-Change "Desinstalar Oh My Posh ($PoshWingetId)" {
+            $code = Invoke-Native 'winget' @('uninstall', '--id', $PoshWingetId, '--exact', '--source', 'winget')
+            if ($code -ne 0) { Write-Warn "winget termino con codigo $code al desinstalar Oh My Posh." }
+        }
+    }
+    $themes = @(Get-ChildItem -LiteralPath $HOME -Filter '*.omp.*' -File -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+    if ($themes.Count) { Write-Info "Los temas guardados en $HOME no se borran: $($themes -join ', ')" }
 }
 
 # --- Principal ---------------------------------------------------------------
@@ -1086,10 +860,11 @@ function Show-Summary {
 
 function Main {
     $script:Interactive = Test-Interactive
-    try { $script:Ansi = [bool]$Host.UI.SupportsVirtualTerminal } catch { $script:Ansi = $false }
     [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-    # Con la sesion de Oh My Posh heredada de la terminal, 'oh-my-posh print' ignora --config.
-    Remove-Item Env:POSH_SESSION_ID -ErrorAction SilentlyContinue
+    # Ruta absoluta: [IO.File] y la instancia de PowerShell 7 no usan el directorio actual de esta sesion.
+    if ($StarshipConfig -notmatch '^https?://' -and (Test-Path -LiteralPath $StarshipConfig)) {
+        $script:StarshipConfig = (Resolve-Path -LiteralPath $StarshipConfig).ProviderPath
+    }
 
     Write-Step "Configuracion de Windows Terminal y PowerShell $($PSVersionTable.PSVersion)"
     if ($DryRun) { Write-Warn 'Modo simulacion: no se instalara ni modificara nada.' }
@@ -1098,16 +873,14 @@ function Main {
     Update-SessionPath
     Switch-ToPwsh
 
-    try {
-        $shells = @(Get-Shells)
-        Set-ScriptPolicy $shells
-        Install-NerdFont
-        Update-TerminalSettings
-        Update-Profiles $shells
-        Show-Summary
-    } finally {
-        if ($script:ThemeDir) { Remove-Item -LiteralPath $script:ThemeDir -Recurse -Force -ErrorAction SilentlyContinue }
-    }
+    $shells = @(Get-Shells)
+    Set-ScriptPolicy $shells
+    Install-NerdFont
+    Update-TerminalSettings
+    Update-StarshipConfig
+    Update-Profiles $shells
+    Remove-OhMyPosh $shells
+    Show-Summary
 }
 
 # Permite cargar las funciones con ". .\personalizar-terminal.ps1" sin ejecutar nada.

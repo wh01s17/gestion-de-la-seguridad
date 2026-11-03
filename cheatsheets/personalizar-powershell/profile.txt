@@ -7,6 +7,11 @@ function l { eza --icons @args }
 function ll { eza --icons -l @args }
 function lla { eza --icons -la @args }
 
-oh-my-posh init pwsh --config 'pure' | Invoke-Expression
+function Invoke-Starship-PreCommand {
+    $id = Get-History -Count 1 | ForEach-Object { $_.Id }
+    if ($id -and $id -ne $global:StarshipLastHistoryId) { Write-Host }
+    $global:StarshipLastHistoryId = $id
+}
+Invoke-Expression (&starship init powershell)
 
 Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
