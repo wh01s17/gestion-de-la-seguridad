@@ -1,0 +1,9 @@
+id,recurso,tipo,ubicacion,depende_de,respaldo,nota
+D1,Energía eléctrica de la sede,Infraestructura,Local,-,UPS de 20 minutos,Alimenta switches y servidores de la sede
+D2,ERP,Aplicación,Local (servidor sede),Energía; Base de datos ERP,Respaldo diario sin prueba de restauración,Núcleo de despacho facturación e inventario
+D3,Base de datos ERP,Datos,Local,Energía; Almacenamiento,Respaldo diario,RPO real desconocido
+D4,Tienda e-commerce,Aplicación,Cloud,Internet del proveedor cloud; Pasarela de pago,Alta disponibilidad del proveedor,Responde sin la sede; su stock llega desde el ERP por el enlace de la sede
+D5,Integración con transportistas,Servicio,Local,ERP; Internet,Sin respaldo,Conecta despacho con couriers
+D6,Identidad y directorio,Servicio,Local,Energía,Sin réplica,Autentica a todos los sistemas locales
+D7,Enlace a Internet de la sede,Red,Local,Energía,Sin enlace secundario,Conecta la sede con transportistas y servicios cloud; sincroniza el stock
+D8,Respaldo diario,Datos,NAS local,Energía,-,Nunca se probó una restauración completa
