@@ -1,0 +1,8 @@
+id,recurso,depende_de,tiempo_recuperacion_h,probado,punto_de_recuperacion,nota
+C1,Identidad y directorio,Servidores de la sede,2,No (estimación de TI),Configuración respaldada cada semana,Debe estar disponible antes que el ERP
+C2,Base de datos y ERP,Identidad y directorio,7,Sí (prueba del 31-10: 6 h de restauración y 1 h de validación),Respaldo completo diario a las 23:00 (hasta 24 h de pérdida),Sirve a venta (stock) y despacho y facturación
+C3,Integración con transportistas,ERP; Enlace a Internet,1,Sí,Sin datos propios,Se reconfigura después de levantar el ERP
+C4,Tienda e-commerce,Proveedor cloud,0.25,Sí (SLA del proveedor),Pedidos replicados por el proveedor,Responde sin la sede pero sin stock confirmado si el ERP no está
+C5,Servicio tributario,Externo,-,-,-,Disponible aunque la sede no lo esté
+C6,Enlace a Internet de la sede,Energía,8,No (SLA del proveedor),-,Sin enlace secundario
+C7,NAS de respaldo,Energía,-,-,-,Está en la misma sala y la misma red que los servidores

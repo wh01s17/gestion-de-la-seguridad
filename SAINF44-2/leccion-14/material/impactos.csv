@@ -1,0 +1,15 @@
+id,proceso,periodo,horizonte_h,perdida_mm,clientes_contratos,legal_regulatorio,operacion
+I01,Venta en línea,Normal,2,12,Reclamos aislados en redes,Sin efecto,Pedidos sin stock confirmado se regularizan en el día
+I02,Venta en línea,Normal,4,31,Reclamos masivos y nota en prensa local,Sin efecto,Pedidos sin stock confirmado se regularizan en el día
+I03,Venta en línea,Normal,8,64,Reclamos masivos y nota en prensa local,Sin efecto,Más de un día para anular o confirmar pedidos
+I04,Venta en línea,Normal,24,180,Reclamos masivos y nota en prensa local,Reclamos ante SERNAC con multa posible,Más de un día para anular o confirmar pedidos
+I05,Despacho y logística,Normal,2,1,Demoras sin reclamos,Sin efecto,Se pone al día en el mismo turno
+I06,Despacho y logística,Normal,4,4,Reclamos aislados de comercios,Sin efecto,Se pone al día en el día
+I07,Despacho y logística,Normal,8,9,No sale el camión de las 17:00: RETAIL SUR puede terminar el contrato por segundo incumplimiento del año,Sin efecto,Más de un día para ponerse al día
+I08,Despacho y logística,Normal,24,25,Pérdida del contrato con RETAIL SUR,Sin efecto,Bodega saturada: el atraso no se recupera en la semana
+I09,Facturación electrónica,Normal,2,0.5,Sin efecto,Sin efecto,Se pone al día en el mismo turno
+I10,Facturación electrónica,Normal,4,1,Sin efecto,Sin efecto,Se pone al día en el mismo turno
+I11,Facturación electrónica,Normal,8,3,Sin efecto,Atraso subsanable sin multa,Se pone al día en el día
+I12,Facturación electrónica,Normal,24,12,Multa contractual de RETAIL SUR por factura fuera de plazo,Documentos emitidos fuera de plazo: infracción tributaria cierta,Más de un día para ponerse al día
+I13,Facturación electrónica,Cierre de mes,4,6,Sin efecto,Atraso subsanable sin multa,Se pone al día en el día
+I14,Facturación electrónica,Cierre de mes,8,35,El banco no anticipa las facturas del cierre (contrato de factoring),Atraso subsanable sin multa,Se pone al día en el día

@@ -1,0 +1,8 @@
+id,estrategia,que_cubre,rto_logrado_h,rpo_logrado,costo_anual_mm,supuestos_y_limites
+E1,Respaldo incremental cada hora y copia diaria inmutable fuera de la sede,Datos del ERP,Sin cambio,1 h,6,No acelera la restauración; protege el respaldo ante incendio o ransomware en la sala
+E2,Réplica asíncrona de ERP y directorio en la nube con servidores en espera,Identidad y ERP,2,15 min,38,Replica por el enlace de la sede; la réplica copia también errores y cifrado; exige prueba de conmutación semestral
+E3,Servidor de reemplazo preinstalado en la oficina secundaria,Identidad y ERP,5,El del respaldo que se use,16,Restaura desde el NAS o desde la copia fuera de la sede; exige prueba anual
+E4,Enlace a Internet secundario con otro proveedor,Enlace de la sede,-,-,4,Elimina el SPOF del enlace; no cambia el tiempo de recuperar el ERP
+E5,Generador eléctrico para la sede,Energía,-,-,20,Evita cortes prolongados; no ayuda si se pierden los servidores
+E6,Réplica síncrona en dos centros de datos con conmutación automática,Identidad y ERP,0.25,0 min,95,Pérdida casi nula; exige dos centros de datos cercanos
+E7,Facturación de contingencia en el portal del servicio tributario,Facturación,-,-,1,Permite emitir facturas sin ERP a las 2 h; requiere capacitación y conciliación posterior
